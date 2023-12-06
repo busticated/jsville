@@ -9,6 +9,7 @@
       "version": "1.0.0",
       "license": "UNLICENSED",
       "devDependencies": {
+        "enquirer": "^2.4.1",
         "fs-extra": "^11.2.0",
         "lerna": "^8.0.0",
         "tshy": "^1.8.1"
@@ -589,6 +590,18 @@
       },
       "peerDependencies": {
         "nx": ">= 16 <= 18"
+      }
+    },
+    "node_modules/@nx/devkit/node_modules/enquirer": {
+      "version": "2.3.6",
+      "resolved": "https://registry.npmjs.org/enquirer/-/enquirer-2.3.6.tgz",
+      "integrity": "sha512-yjNnPr315/FjS4zIsUxYguYUPP2e1NK4d7E7ZOLiyYCcbFBiTMyID+2wvm2w6+pZ/odMA7cRkjhsPbltwBOrLg==",
+      "dev": true,
+      "dependencies": {
+        "ansi-colors": "^4.1.1"
+      },
+      "engines": {
+        "node": ">=8.6"
       }
     },
     "node_modules/@nx/devkit/node_modules/semver": {
@@ -2544,12 +2557,13 @@
       }
     },
     "node_modules/enquirer": {
-      "version": "2.3.6",
-      "resolved": "https://registry.npmjs.org/enquirer/-/enquirer-2.3.6.tgz",
-      "integrity": "sha512-yjNnPr315/FjS4zIsUxYguYUPP2e1NK4d7E7ZOLiyYCcbFBiTMyID+2wvm2w6+pZ/odMA7cRkjhsPbltwBOrLg==",
+      "version": "2.4.1",
+      "resolved": "https://registry.npmjs.org/enquirer/-/enquirer-2.4.1.tgz",
+      "integrity": "sha512-rRqJg/6gd538VHvR3PSrdRBb/1Vy2YfzHqzvbhGIQpDRKIa4FgV/54b5Q1xYSxOOwKvjXweS26E0Q+nAMwp2pQ==",
       "dev": true,
       "dependencies": {
-        "ansi-colors": "^4.1.1"
+        "ansi-colors": "^4.1.1",
+        "strip-ansi": "^6.0.1"
       },
       "engines": {
         "node": ">=8.6"
@@ -5410,6 +5424,18 @@
         "@swc/core": {
           "optional": true
         }
+      }
+    },
+    "node_modules/nx/node_modules/enquirer": {
+      "version": "2.3.6",
+      "resolved": "https://registry.npmjs.org/enquirer/-/enquirer-2.3.6.tgz",
+      "integrity": "sha512-yjNnPr315/FjS4zIsUxYguYUPP2e1NK4d7E7ZOLiyYCcbFBiTMyID+2wvm2w6+pZ/odMA7cRkjhsPbltwBOrLg==",
+      "dev": true,
+      "dependencies": {
+        "ansi-colors": "^4.1.1"
+      },
+      "engines": {
+        "node": ">=8.6"
       }
     },
     "node_modules/nx/node_modules/glob": {
