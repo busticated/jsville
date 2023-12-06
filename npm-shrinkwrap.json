@@ -9,6 +9,7 @@
       "version": "1.0.0",
       "license": "UNLICENSED",
       "devDependencies": {
+        "fs-extra": "^11.2.0",
         "lerna": "^8.0.0",
         "tshy": "^1.8.1"
       }
