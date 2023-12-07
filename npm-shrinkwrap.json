@@ -8,6 +8,9 @@
       "name": "jsville",
       "version": "1.0.0",
       "license": "UNLICENSED",
+      "workspaces": [
+        "./packages/*"
+      ],
       "devDependencies": {
         "@types/node": "^20.10.3",
         "@typescript-eslint/eslint-plugin": "^6.13.2",

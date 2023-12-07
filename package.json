@@ -5,9 +5,16 @@
   "author": "Busticated",
   "license": "UNLICENSED",
   "private": true,
+  "workspaces": [
+    "./packages/*"
+  ],
   "scripts": {
     "start": "echo \"Error: no source code available\" && exit 1",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test --workspaces",
+    "lint": "eslint . --ext .js,.jsx,.mjs,.ts,.tsx --ignore-path .gitignore",
+    "lint:fix": "npm run lint -- --fix",
+    "typecheck": "npm run typecheck --workspaces",
+    "build": "npm run build --workspaces"
   },
   "devDependencies": {
     "@types/node": "^20.10.3",
