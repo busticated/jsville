@@ -195,6 +195,10 @@
         "node": ">=4"
       }
     },
+    "node_modules/@bust/numeric-id-hasher": {
+      "resolved": "packages/numeric-id-hasher",
+      "link": true
+    },
     "node_modules/@eslint-community/eslint-utils": {
       "version": "4.4.0",
       "resolved": "https://registry.npmjs.org/@eslint-community/eslint-utils/-/eslint-utils-4.4.0.tgz",
@@ -9719,6 +9723,14 @@
       },
       "funding": {
         "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "packages/numeric-id-hasher": {
+      "version": "0.0.0",
+      "license": "(MIT OR Apache-2.0)",
+      "engines": {
+        "node": ">=18",
+        "npm": "10.x"
       }
     }
   }
