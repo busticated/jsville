@@ -199,6 +199,10 @@
       "resolved": "packages/numeric-id-hasher",
       "link": true
     },
+    "node_modules/@bust/timer": {
+      "resolved": "packages/timer",
+      "link": true
+    },
     "node_modules/@eslint-community/eslint-utils": {
       "version": "4.4.0",
       "resolved": "https://registry.npmjs.org/@eslint-community/eslint-utils/-/eslint-utils-4.4.0.tgz",
@@ -9726,6 +9730,15 @@
       }
     },
     "packages/numeric-id-hasher": {
+      "name": "@bust/numeric-id-hasher",
+      "version": "0.0.0",
+      "license": "(MIT OR Apache-2.0)",
+      "engines": {
+        "node": ">=18",
+        "npm": "10.x"
+      }
+    },
+    "packages/timer": {
       "version": "0.0.0",
       "license": "(MIT OR Apache-2.0)",
       "engines": {
