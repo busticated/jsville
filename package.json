@@ -14,7 +14,9 @@
     "lint": "eslint . --ext .js,.jsx,.mjs,.ts,.tsx --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "typecheck": "npm run typecheck --workspaces",
-    "build": "npm run build --workspaces"
+    "build": "npm run build --workspaces",
+    "package:create": "node ./bin/create-package.mjs",
+    "package:list": "npm list --workspaces"
   },
   "devDependencies": {
     "@types/node": "^20.10.3",

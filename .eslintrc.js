@@ -8,6 +8,9 @@ module.exports = {
 		'commonjs': true,
 		'shared-node-browser': true
 	},
+	globals: {
+		process: true
+	},
 	rules: {
 		'array-bracket-spacing': ['error', 'never'],
 		'arrow-spacing': 'error',
