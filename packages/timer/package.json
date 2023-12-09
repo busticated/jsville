@@ -1,6 +1,6 @@
 {
   "name": "@bust/timer",
-  "description": "Just a li'l timer object to track and report on the passage of time",
+  "description": "A li'l timer object whose only purpose is to track and report on the unrelenting march of time.",
   "version": "0.0.0",
   "author": "Busticated",
   "license": "(MIT OR Apache-2.0)",
