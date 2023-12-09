@@ -199,6 +199,10 @@
       "resolved": "packages/numeric-id-hasher",
       "link": true
     },
+    "node_modules/@bust/periodical": {
+      "resolved": "packages/periodical",
+      "link": true
+    },
     "node_modules/@bust/timer": {
       "resolved": "packages/timer",
       "link": true
@@ -9738,7 +9742,17 @@
         "npm": "10.x"
       }
     },
+    "packages/periodical": {
+      "name": "@bust/periodical",
+      "version": "0.0.0",
+      "license": "(MIT OR Apache-2.0)",
+      "engines": {
+        "node": ">=18",
+        "npm": "10.x"
+      }
+    },
     "packages/timer": {
+      "name": "@bust/timer",
       "version": "0.0.0",
       "license": "(MIT OR Apache-2.0)",
       "engines": {
