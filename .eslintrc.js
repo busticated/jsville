@@ -11,6 +11,9 @@ module.exports = {
 	globals: {
 		process: true
 	},
+	ignorePatterns: [
+		'**/docs/*'
+	],
 	rules: {
 		'array-bracket-spacing': ['error', 'never'],
 		'arrow-spacing': 'error',
@@ -88,10 +91,7 @@ module.exports = {
 			nonwords: false
 		}],
 		'strict': ['error', 'global'],
-		'valid-jsdoc': ['warn', {
-			requireReturn: false,
-			requireParamDescription: false
-		}]
+		'valid-jsdoc': 'off'
 	},
 	overrides: [
 		{

@@ -19,11 +19,12 @@
   "scripts": {
     "version": "npm run changelog:update",
     "prepare": "npm run build",
-    "clean": "rm -rf ./dist && rm -rf ./tmp/*",
-    "clean:modules": "rm -rf ./node_modules",
     "test": "npm run build && NODE_V8_COVERAGE=tmp/coverage node --test --test-reporter spec --experimental-test-coverage --enable-source-maps dist/esm/*.test.js",
     "typecheck": "tsc --project .tshy/esm.json --noemit",
-    "build": "tshy"
+    "build": "tshy",
+    "clean": "rm -rf ./dist && rm -rf ./tmp/*",
+    "clean:modules": "rm -rf ./node_modules",
+    "docs:build": "typedoc --plugin typedoc-plugin-markdown --hideBreadcrumbs true --githubPages false --sourceLinkTemplate '/{path}#L{line}' --readme none src/index.ts"
   },
   "engines": {
     "node": ">=18",

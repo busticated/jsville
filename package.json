@@ -15,6 +15,7 @@
     "lint:fix": "npm run lint -- --fix",
     "typecheck": "npm run typecheck --workspaces",
     "build": "npm run build --workspaces",
+    "docs:build": "npm run docs:build --workspaces",
     "package:create": "node ./bin/create-package.mjs",
     "package:list": "npm list --workspaces"
   },
