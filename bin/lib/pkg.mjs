@@ -29,6 +29,7 @@ export class Pkg {
 		this.link = path.join(path.basename(PACKAGES_DIR), this.basename);
 		this.exportName = _.camelCase(this.basename);
 		this.path = path.join(PACKAGES_DIR, this.basename);
+		this.docsPath = path.join(this.path, 'docs');
 		this.changelogPath = path.join(this.path, 'CHANGELOG.md');
 		this.readmePath = path.join(this.path, 'README.md');
 		this.jsonPath = path.join(this.path, 'package.json');
