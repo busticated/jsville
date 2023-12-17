@@ -21,5 +21,9 @@ export class Git {
 	async tag(args, options) {
 		return this.exec(['tag', ...args], options);
 	}
+
+	async log(args, options) {
+		return this.exec(['log', ...args], options);
+	}
 }
 

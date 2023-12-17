@@ -24,7 +24,9 @@
     "build": "tshy",
     "clean": "rm -rf ./dist && rm -rf ./tmp/*",
     "clean:modules": "rm -rf ./node_modules",
-    "docs:build": "typedoc --plugin typedoc-plugin-markdown --hideBreadcrumbs true --githubPages false --sourceLinkTemplate '/{path}#L{line}' --readme none src/index.ts"
+    "docs:build": "typedoc --plugin typedoc-plugin-markdown --hideBreadcrumbs true --githubPages false --sourceLinkTemplate '/{path}#L{line}' --readme none src/index.ts",
+    "changelog:show": "node ../../bin/show-unpublished-changes.mjs <%= name %>",
+    "changelog:update": "node ../../bin/update-changelog.mjs <%= name %>"
   },
   "engines": {
     "node": ">=18",

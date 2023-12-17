@@ -17,7 +17,9 @@
     "build": "npm run build --workspaces",
     "docs:build": "npm run docs:build --workspaces",
     "package:create": "node ./bin/create-package.mjs",
-    "package:list": "npm list --workspaces"
+    "package:list": "npm list --workspaces",
+    "changelog:show": "npm run changelog:show --workspaces",
+    "changelog:update": "npm run changelog:update --workspaces"
   },
   "devDependencies": {
     "@types/node": "^20.10.3",
