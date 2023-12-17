@@ -10,16 +10,22 @@
   ],
   "scripts": {
     "start": "echo \"Error: no source code available\" && exit 1",
-    "test": "npm run test --workspaces",
+    "test": "npm run lint && npm run typecheck && npm run test --workspaces",
     "lint": "eslint . --ext .js,.jsx,.mjs,.ts,.tsx --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "typecheck": "npm run typecheck --workspaces",
     "build": "npm run build --workspaces",
+    "clean": "npm run clean --workspaces",
+    "clean:modules": "npm run clean:modules --workspaces",
     "docs:build": "npm run docs:build --workspaces",
     "package:create": "node ./bin/create-package.mjs",
     "package:list": "npm list --workspaces",
+    "package:publish": "lerna publish from-package --yes --no-verify-access",
     "changelog:show": "npm run changelog:show --workspaces",
-    "changelog:update": "npm run changelog:update --workspaces"
+    "changelog:update": "npm run changelog:update --workspaces",
+    "release:dry-run": "lerna exec -- npm pack --dry-run --loglevel notice && lerna changed",
+    "release": "lerna version",
+    "todo": "git grep -P -e 'TODO\\s?(.*)' --ignore-case --heading --break --context=2 --full-name --line-number -- :^./package.json :^./README.md"
   },
   "devDependencies": {
     "@types/node": "^20.10.3",
