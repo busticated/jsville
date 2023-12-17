@@ -1,7 +1,7 @@
 {
   "name": "@bust/periodical",
   "description": "Run a function at a given interval normalized to clock time",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "author": "Busticated",
   "license": "(MIT OR Apache-2.0)",
   "publishConfig": {
