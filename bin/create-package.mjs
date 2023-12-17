@@ -22,6 +22,7 @@ try {
 		changelogMD,
 		indexTestTS,
 		indexTS,
+		licenseMD,
 		packageJSON,
 		readmeMD,
 		tsconfigJSON
@@ -30,6 +31,7 @@ try {
 	await Promise.all([
 		fs.outputFile(path.join(pkg.path, 'README.md'), readmeMD(pkg)),
 		fs.outputFile(path.join(pkg.path, 'CHANGELOG.md'), changelogMD(pkg)),
+		fs.outputFile(path.join(pkg.path, 'LICENSE.md'), licenseMD(pkg)),
 		fs.outputFile(path.join(pkg.path, 'package.json'), packageJSON(pkg)),
 		fs.outputFile(path.join(pkg.path, 'tsconfig.json'), tsconfigJSON(pkg)),
 		fs.outputFile(path.join(pkg.path, 'src', 'index.test.ts'), indexTestTS(pkg)),
@@ -52,7 +54,7 @@ logTitle('All Done!');
 
 async function promptForPackageInfo(cli){
 	const rulesMsg = 'must start with `@bust/`. only characters `a-z` and `-` are allowed.';
-	const { name, description, isPrivate } = await cli.prompt([
+	const { name, description } = await cli.prompt([
 		{
 			type: 'input',
 			name: 'name',
@@ -78,15 +80,9 @@ async function promptForPackageInfo(cli){
 			name: 'description',
 			message: 'What does your package do?',
 			result: (description) => description || ''
-		},
-		{
-			type: 'confirm',
-			name: 'isPrivate',
-			initial: false,
-			message: 'Should this package be `private`?'
 		}
 	]);
 
-	return new Pkg({ name, description, isPrivate });
+	return new Pkg({ name, description });
 }
 
