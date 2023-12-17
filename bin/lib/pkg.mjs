@@ -8,6 +8,9 @@ import { Git } from './git.mjs';
 
 const CHGLOG_MARKER_START = '<!-- next-version-start -->';
 const CHGLOG_MARKER_END = '<!-- next-version-end -->';
+const README_MARKER_START = '<!-- api-docs-start -->';
+const README_MARKER_END = '<!-- api-docs-end -->';
+
 
 
 export class Pkg {
@@ -112,5 +115,23 @@ export class Pkg {
 
 	async writeReadme(content) {
 		return fs.writeFile(this.readmePath, content);
+	}
+
+	async updateReadmeDocsLink(ref) {
+		if (!ref) {
+			return;
+		}
+
+		const content = await this.readReadme();
+		const ptn = createSubstitutionPtn(README_MARKER_START, README_MARKER_END);
+		const link = [
+			`${README_MARKER_START}`,
+			`see [here](https://github.com/busticated/jsville/tree/${ref}/packages/periodical/docs)`,
+			`${README_MARKER_END}`,
+		];
+
+		return this.writeReadme(
+			content.replace(ptn, link.join('\n'))
+		);
 	}
 }
