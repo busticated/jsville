@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 
 import * as path from 'node:path';
-import _ from 'lodash';
 import fs from 'fs-extra';
 import { execa } from 'execa';
 import Enquirer from 'enquirer';
 import { loadTemplates } from './lib/load-templates.mjs';
 import { log, logErrorAndExit, logBanner } from './lib/log.mjs';
-import { PACKAGES_DIR } from './lib/constants.mjs';
+import { Pkg } from './lib/pkg.mjs';
 import { Git } from './lib/git.mjs';
 
 
@@ -18,10 +17,7 @@ logBanner();
 log('Create a package...\n');
 
 try {
-	const pkgInfo = await promptForPackageInfo(cli);
-	const { name, location } = pkgInfo;
-	const basename = path.basename(name);
-	const tag = `${name}@0.0.0`; // TODO (busticated); get version from package.json?
+	const pkg = await promptForPackageInfo(cli);
 	const {
 		changelogMD,
 		indexTestTS,
@@ -32,22 +28,22 @@ try {
 	} = await loadTemplates();
 
 	await Promise.all([
-		fs.outputFile(path.join(location, 'README.md'), readmeMD(pkgInfo)),
-		fs.outputFile(path.join(location, 'CHANGELOG.md'), changelogMD(pkgInfo)),
-		fs.outputFile(path.join(location, 'package.json'), packageJSON(pkgInfo)),
-		fs.outputFile(path.join(location, 'tsconfig.json'), tsconfigJSON(pkgInfo)),
-		fs.outputFile(path.join(location, 'src', 'index.test.ts'), indexTestTS(pkgInfo)),
-		fs.outputFile(path.join(location, 'src', 'index.ts'), indexTS(pkgInfo))
+		fs.outputFile(path.join(pkg.path, 'README.md'), readmeMD(pkg)),
+		fs.outputFile(path.join(pkg.path, 'CHANGELOG.md'), changelogMD(pkg)),
+		fs.outputFile(path.join(pkg.path, 'package.json'), packageJSON(pkg)),
+		fs.outputFile(path.join(pkg.path, 'tsconfig.json'), tsconfigJSON(pkg)),
+		fs.outputFile(path.join(pkg.path, 'src', 'index.test.ts'), indexTestTS(pkg)),
+		fs.outputFile(path.join(pkg.path, 'src', 'index.ts'), indexTS(pkg))
 	]);
 
 	await execa('npm', ['install'], { stdio: 'inherit' }); // so root lockfile includes new package
 	await execa('node', ['bin/update-readme.mjs']);
-	await git.add(['README.md', 'npm-shrinkwrap.json', location]);
-	await git.commit(`[${basename}] create package`);
-	await git.tag(['-a', tag, '-m', tag]);
+	await git.add(['README.md', 'npm-shrinkwrap.json', pkg.path]);
+	await git.commit(`[${pkg.basename}] create package`);
+	await git.tag(['-a', pkg.tag, '-m', pkg.tag]);
 
 	log('Success!');
-	log(`Your new ${name} package is located here: ${location}`);
+	log(`Your new ${pkg.name} package is located here: ${pkg.path}`);
 } catch (error){
 	logErrorAndExit(error);
 }
@@ -56,8 +52,6 @@ log('All Done!');
 
 async function promptForPackageInfo(cli){
 	const rulesMsg = 'must start with `@bust/`. only characters `a-z` and `-` are allowed.';
-	const getPkgDir = (name) => path.join(PACKAGES_DIR, path.basename(name));
-
 	const { name, description, isPrivate } = await cli.prompt([
 		{
 			type: 'input',
@@ -71,10 +65,10 @@ async function promptForPackageInfo(cli){
 					return rulesMsg;
 				}
 
-				const dir = getPkgDir(name);
+				const pkg = new Pkg({ name });
 
-				if (await fs.pathExists(dir)){
-					return `Directory "${dir}" already exists! please choose a different name.`;
+				if (await pkg.exists()){
+					return `Directory "${pkg.path}" already exists! please choose a different name.`;
 				}
 				return true;
 			}
@@ -93,9 +87,6 @@ async function promptForPackageInfo(cli){
 		}
 	]);
 
-	const basename = path.basename(name);
-	const exports = _.camelCase(basename);
-	const location = getPkgDir(name);
-	return { name, basename, description, isPrivate, exports, location };
+	return new Pkg({ name, description, isPrivate });
 }
 
