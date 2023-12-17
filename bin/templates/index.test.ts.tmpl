@@ -1,0 +1,12 @@
+import { describe, it } from 'node:test';
+import { strict as assert } from 'node:assert';
+import * as <%= exportName %> from './index.js';
+
+
+describe('<%= name %>', () => {
+	it('has tests', () => {
+		assert(<%= exportName %>);
+		assert.equal(<%= exportName %>.greet(), 'hello world!');
+	});
+});
+

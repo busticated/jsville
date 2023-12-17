@@ -1,0 +1,55 @@
+{
+  "name": "@bust/numeric-id-hasher",
+  "description": "Encode / decode bigints as string hashes for use in shortened urls",
+  "version": "0.0.0",
+  "author": "Busticated",
+  "license": "(MIT OR Apache-2.0)",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/commonjs/index.js",
+  "types": "./dist/commonjs/index.d.ts",
+  "files": [
+    "CHANGELOG.md",
+    "LICENSE.md",
+    "dist/**/!(*.test.js)"
+  ],
+  "tshy": {
+    "exports": {
+      "./package.json": "./package.json",
+      ".": "./src/index.ts"
+    }
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
+    }
+  },
+  "scripts": {
+    "version": "npm run changelog:update && npm run docs:build",
+    "prepare": "npm run build",
+    "test": "npm run build && NODE_V8_COVERAGE=tmp/coverage node --test --test-reporter spec --experimental-test-coverage --enable-source-maps dist/esm/*.test.js",
+    "typecheck": "tsc --noemit",
+    "build": "tshy",
+    "clean": "rm -rf ./dist && rm -rf ./tmp/*",
+    "clean:modules": "rm -rf ./node_modules",
+    "docs:build": "npm run docs:build:api && npm run docs:build:readme",
+    "docs:build:api": "typedoc --plugin typedoc-plugin-markdown --hideBreadcrumbs true --githubPages false --sourceLinkTemplate '/{path}#L{line}' --readme none src/index.ts",
+    "docs:build:readme": "node ../../bin/update-package-readme.mjs @bust/numeric-id-hasher",
+    "changelog:show": "node ../../bin/show-unpublished-changes.mjs @bust/numeric-id-hasher",
+    "changelog:update": "node ../../bin/update-changelog.mjs @bust/numeric-id-hasher"
+  },
+  "engines": {
+    "node": ">=18",
+    "npm": "10.x"
+  }
+}
