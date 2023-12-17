@@ -5,7 +5,7 @@ import fs from 'fs-extra';
 import { execa } from 'execa';
 import Enquirer from 'enquirer';
 import { loadTemplates } from './lib/load-templates.mjs';
-import { log, logErrorAndExit, logBanner } from './lib/log.mjs';
+import { logTitle, logErrorAndExit, logBanner } from './lib/log.mjs';
 import { Pkg } from './lib/pkg.mjs';
 import { Git } from './lib/git.mjs';
 
@@ -14,7 +14,7 @@ const cli = new Enquirer();
 const git = new Git();
 
 logBanner();
-log('Create a package...\n');
+logTitle('Create a package...\n');
 
 try {
 	const pkg = await promptForPackageInfo(cli);
@@ -42,13 +42,13 @@ try {
 	await git.commit(`[${pkg.basename}] create package`);
 	await git.tag(['-a', pkg.tag, '-m', pkg.tag]);
 
-	log('Success!');
-	log(`Your new ${pkg.name} package is located here: ${pkg.path}`);
+	logTitle('Success!');
+	logTitle(`Your new ${pkg.name} package is located here: ${pkg.path}`);
 } catch (error){
 	logErrorAndExit(error);
 }
 
-log('All Done!');
+logTitle('All Done!');
 
 async function promptForPackageInfo(cli){
 	const rulesMsg = 'must start with `@bust/`. only characters `a-z` and `-` are allowed.';

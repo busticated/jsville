@@ -4,7 +4,7 @@ import * as path from 'node:path';
 import fs from 'fs-extra';
 import { createSubstitutionPtn } from './lib/create-substitution-pattern.mjs';
 import { REPO_DIR, PACKAGES_DIR } from './lib/constants.mjs';
-import { log, logErrorAndExit } from './lib/log.mjs';
+import { logTitle, logErrorAndExit } from './lib/log.mjs';
 import { Pkg } from './lib/pkg.mjs';
 
 const README_PATH = path.join(REPO_DIR, 'README.md');
@@ -13,7 +13,7 @@ const PKGLIST_MARKER_END = '<!-- pkg-list-end -->';
 
 
 try {
-	log(`Updating package list in top-level README...`);
+	logTitle(`Updating package list in top-level README...`);
 	const pkgs = await getPkgs(PACKAGES_DIR);
 	const listMarkdown = renderPackageList(pkgs);
 	const readme = await fs.readFile(README_PATH, 'utf8');
@@ -22,7 +22,7 @@ try {
 	logErrorAndExit(error);
 }
 
-log('All Done!');
+logTitle('All Done!');
 
 async function getPkgs(dir){
 	const files = await fs.readdir(dir, { withFileTypes: true });

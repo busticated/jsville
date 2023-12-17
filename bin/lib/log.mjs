@@ -1,5 +1,9 @@
 export const log = (message) => {
-	console.log(`:::: ${message}`); // eslint-disable-line no-console
+	console.log(message); // eslint-disable-line no-console
+};
+
+export const logTitle = (message) => {
+	log(`:::: ${message}`); // eslint-disable-line no-console
 };
 
 // https://patorjk.com/software/taag/#p=display&f=Ivrit&t=JSVille
