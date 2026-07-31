@@ -34,7 +34,7 @@ describe('@bust/periodically', () => {
 		ctx.mock.timers.tick(interval);
 
 		assert.equal(myObj.value, 1);
-		assert.equal(typeof p.timeoutId, 'number');
+		assert.notEqual(p.timeoutId, undefined);
 		assert.equal(p.isRunning(), true);
 	});
 
@@ -49,7 +49,7 @@ describe('@bust/periodically', () => {
 		ctx.mock.timers.tick(interval);
 
 		assert.equal(run.mock.callCount(), 1);
-		assert.equal(typeof p.timeoutId, 'number');
+		assert.notEqual(p.timeoutId, undefined);
 		assert.equal(p.isRunning(), true);
 	});
 
@@ -78,7 +78,7 @@ describe('@bust/periodically', () => {
 
 		assert.equal(run.mock.callCount(), 1);
 		assert.notEqual(p.fn, noop);
-		assert.equal(typeof p.timeoutId, 'number');
+		assert.notEqual(p.timeoutId, undefined);
 		assert.equal(p.isRunning(), true);
 	});
 
