@@ -103,6 +103,15 @@ e.g.
 npm test -- --workspace packages/timer
 ```
 
+To run tests _with_ code coverage reporting:
+
+```shell
+npm run test:coverage
+```
+
+> [!NOTE]
+> 🐛 Node's `--experimental-test-coverage` can throw on some older Node versions when reporting coverage for source-mapped TypeScript builds ([nodejs/node#51552](https://github.com/nodejs/node/issues/51552)) - this will be fixed in a future update.
+
 Run `npm run` to see other test-related commands, if available.
 
 </p>
@@ -324,4 +333,3 @@ Packages are published from the `main` branch via CI/CD after peer review. To re
 
 > [!CAUTION]
 > Avoid editing `git` history (`rebase`, etc) once the release commit is made - this will nullify the generated tags ([docs](https://git-scm.com/docs/git-tag#_on_re_tagging))_
-
