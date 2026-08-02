@@ -2,9 +2,6 @@ name: Test
 
 on:
   workflow_call:
-    secrets:
-      NPM_TOKEN:
-        required: true
 
 jobs:
   test:
@@ -19,27 +16,25 @@ jobs:
         architecture:
           - x64
         node_version:
-          - 18
-          - 20
+          - 'lts/-1'
+          - 'lts/*'
         experimental:
           - false
         include:
-          - node_version: 21
+          - node_version: 'latest'
             experimental: true
             os: ubuntu-latest
             architecture: x64
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node_version }}
           architecture: ${{ matrix.architecture }}
+          check-latest: true
       - name: Install Dependencies
         uses: bahmutov/npm-install@v1
       - name: Run tests
         run: npm test
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-

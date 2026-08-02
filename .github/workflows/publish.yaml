@@ -10,16 +10,22 @@ on:
       NPM_TOKEN:
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 'lts/*'
+          check-latest: true
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
       - name: Install Dependencies
         uses: bahmutov/npm-install@v1
       - name: Upload to NPM
