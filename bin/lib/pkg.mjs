@@ -60,7 +60,7 @@ export class Pkg {
 		let version;
 
 		try {
-			({ stdout: version } = await execa('npm', ['view', name]));
+			({ stdout: version } = await execa('npm', ['view', name, 'version']));
 		} catch (_) {
 			version = '0.0.0';
 		}
@@ -127,7 +127,7 @@ export class Pkg {
 		const ptn = createSubstitutionPtn(README_MARKER_START, README_MARKER_END);
 		const link = [
 			`${README_MARKER_START}`,
-			`see [here](https://github.com/busticated/jsville/tree/${ref}/packages/periodical/docs)`,
+			`see [here](https://github.com/busticated/jsville/tree/${ref}/${this.link}/docs)`,
 			`${README_MARKER_END}`,
 		];
 
