@@ -5,7 +5,7 @@
 
 ## Installation
 
-1. Install Node.js [`node@20.x` and `npm@10.x` are required]
+1. Install Node.js [an [active LTS release](https://nodejs.org/en/about/previous-releases) (`node@22.x` or newer) and `npm@10.x` or newer are required]
 2. Clone this repository `$ git clone git@github.com:busticated/jsville.git && cd ./jsville`
 3. Install dependencies `$ npm install`
 4. View available commands `$ npm run`
@@ -103,14 +103,7 @@ e.g.
 npm test -- --workspace packages/timer
 ```
 
-To run tests _with_ code coverage reporting:
-
-```shell
-npm run test:coverage
-```
-
-> [!NOTE]
-> 🐛 Node's `--experimental-test-coverage` can throw on some older Node versions when reporting coverage for source-mapped TypeScript builds ([nodejs/node#51552](https://github.com/nodejs/node/issues/51552)) - this will be fixed in a future update.
+`npm test` reports code coverage alongside test results and fails if line, branch, or function coverage drops below 100%.
 
 Run `npm run` to see other test-related commands, if available.
 
@@ -304,7 +297,7 @@ e.g.
 
 ## Docs & Resources
 
-* [Node.js](https://nodejs.org/dist/latest-v20.x/docs/api/)
+* [Node.js](https://nodejs.org/dist/latest-v24.x/docs/api/)
 * [Typescript](https://www.typescriptlang.org)
 * [tshy](https://github.com/isaacs/tshy)
 * [NPM](https://docs.npmjs.com)

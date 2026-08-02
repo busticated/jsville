@@ -27,7 +27,7 @@ describe('@bust/periodically', () => {
 			}
 		};
 
-		ctx.mock.timers.enable(['setTimeout']);
+		ctx.mock.timers.enable({ apis: ['setTimeout'] });
 
 		p.start(myObj.run, myObj);
 
@@ -42,7 +42,7 @@ describe('@bust/periodically', () => {
 		const p = new Periodical(interval);
 		const run = ctx.mock.fn();
 
-		ctx.mock.timers.enable(['setTimeout']);
+		ctx.mock.timers.enable({ apis: ['setTimeout'] });
 
 		p.start(run);
 
@@ -57,7 +57,7 @@ describe('@bust/periodically', () => {
 		const p = new Periodical(interval);
 		const myObj = { run: ctx.mock.fn() };
 
-		ctx.mock.timers.enable(['setTimeout']);
+		ctx.mock.timers.enable({ apis: ['setTimeout'] });
 
 		p.start(myObj.run, myObj);
 		p.stop();
@@ -71,7 +71,7 @@ describe('@bust/periodically', () => {
 		const p = new Periodical(interval);
 		const run = ctx.mock.fn();
 
-		ctx.mock.timers.enable(['setTimeout']);
+		ctx.mock.timers.enable({ apis: ['setTimeout'] });
 
 		p.start(run);
 		p.exec();
@@ -98,7 +98,7 @@ describe('@bust/periodically', () => {
 		const p = new Periodical(interval);
 		const myObj = { run: ctx.mock.fn() };
 
-		ctx.mock.timers.enable(['setTimeout']);
+		ctx.mock.timers.enable({ apis: ['setTimeout'] });
 
 		p.start(myObj.run, myObj);
 

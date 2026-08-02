@@ -1,8 +1,14 @@
+[**@bust/timer**](../README.md)
+
+***
+
 # Class: Timer
+
+Defined in: [index.ts:33](/packages/timer/src/index.ts#L33)
 
 Main `Timer` class.
 
-**`Example`**
+## Example
 
 ```ts
 import { Timer } from '@bust/timer';
@@ -23,70 +29,45 @@ setTimeout(
 );
 ```
 
-## Table of contents
-
-### Constructors
-
-- [constructor](Timer.md#constructor)
-
-### Properties
-
-- [ended](Timer.md#ended)
-- [started](Timer.md#started)
-
-### Methods
-
-- [elapsed](Timer.md#elapsed)
-- [end](Timer.md#end)
-- [isFinished](Timer.md#isfinished)
-- [isRunning](Timer.md#isrunning)
-- [mark](Timer.md#mark)
-- [now](Timer.md#now)
-- [start](Timer.md#start)
-
 ## Constructors
 
-### constructor
+### Constructor
 
-• **new Timer**(): [`Timer`](Timer.md)
+> **new Timer**(): `Timer`
+
+Defined in: [index.ts:44](/packages/timer/src/index.ts#L44)
 
 #### Returns
 
-[`Timer`](Timer.md)
-
-#### Defined in
-
-[index.ts:44](/packages/timer/src/index.ts#L44)
+`Timer`
 
 ## Properties
 
 ### ended
 
-• **ended**: `number`
+> **ended**: `number`
+
+Defined in: [index.ts:42](/packages/timer/src/index.ts#L42)
 
 end time, in milliseconds
 
-#### Defined in
-
-[index.ts:42](/packages/timer/src/index.ts#L42)
-
-___
+***
 
 ### started
 
-• **started**: `number`
+> **started**: `number`
+
+Defined in: [index.ts:37](/packages/timer/src/index.ts#L37)
 
 start time, in milliseconds
 
-#### Defined in
-
-[index.ts:37](/packages/timer/src/index.ts#L37)
-
 ## Methods
 
-### elapsed
+### elapsed()
 
-▸ **elapsed**(): `number`
+> **elapsed**(): `number`
+
+Defined in: [index.ts:113](/packages/timer/src/index.ts#L113)
 
 Reports the number of milliseconds since starting the timer. Stops
 incrementing when `timer.end()` is called.
@@ -95,35 +76,35 @@ incrementing when `timer.end()` is called.
 
 `number`
 
-**`Example`**
+#### Example
 
 ```ts
 console.log('total ms elapsed:', timer.elapsed());
 ```
 
-#### Defined in
+***
 
-[index.ts:113](/packages/timer/src/index.ts#L113)
+### end()
 
-___
+> **end**(`time?`): `Timer`
 
-### end
-
-▸ **end**(`time?`): [`Timer`](Timer.md)
+Defined in: [index.ts:81](/packages/timer/src/index.ts#L81)
 
 Ends the timer
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `time?` | `number` | end time, in milliseconds (optional). |
+##### time?
+
+`number`
+
+end time, in milliseconds (optional).
 
 #### Returns
 
-[`Timer`](Timer.md)
+`Timer`
 
-**`Example`**
+#### Example
 
 ```ts
 timer.end();
@@ -133,15 +114,13 @@ timer.isRunning(); // false
 timer.isFinished(); // true
 ```
 
-#### Defined in
+***
 
-[index.ts:81](/packages/timer/src/index.ts#L81)
+### isFinished()
 
-___
+> **isFinished**(): `boolean`
 
-### isFinished
-
-▸ **isFinished**(): `boolean`
+Defined in: [index.ts:142](/packages/timer/src/index.ts#L142)
 
 Reports whether or not the timer has been ended.
 
@@ -149,15 +128,13 @@ Reports whether or not the timer has been ended.
 
 `boolean`
 
-#### Defined in
+***
 
-[index.ts:142](/packages/timer/src/index.ts#L142)
+### isRunning()
 
-___
+> **isRunning**(): `boolean`
 
-### isRunning
-
-▸ **isRunning**(): `boolean`
+Defined in: [index.ts:135](/packages/timer/src/index.ts#L135)
 
 Reports whether or not the timer is currently running.
 
@@ -165,29 +142,29 @@ Reports whether or not the timer is currently running.
 
 `boolean`
 
-#### Defined in
+***
 
-[index.ts:135](/packages/timer/src/index.ts#L135)
+### mark()
 
-___
+> **mark**(`time?`): `Timer`
 
-### mark
-
-▸ **mark**(`time?`): [`Timer`](Timer.md)
+Defined in: [index.ts:100](/packages/timer/src/index.ts#L100)
 
 Marks a point in time
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `time?` | `number` | time to record, in milliseconds (optional). |
+##### time?
+
+`number`
+
+time to record, in milliseconds (optional).
 
 #### Returns
 
-[`Timer`](Timer.md)
+`Timer`
 
-**`Example`**
+#### Example
 
 ```ts
 timer.mark();
@@ -198,15 +175,13 @@ timer.isFinished(); // true
 timer.started === timer.ended; // true
 ```
 
-#### Defined in
+***
 
-[index.ts:100](/packages/timer/src/index.ts#L100)
+### now()
 
-___
+> **now**(): `number`
 
-### now
-
-▸ **now**(): `number`
+Defined in: [index.ts:128](/packages/timer/src/index.ts#L128)
 
 The number of milliseconds elapsed since the epoch. Simple proxy for `Date.now()`.
 
@@ -214,29 +189,29 @@ The number of milliseconds elapsed since the epoch. Simple proxy for `Date.now()
 
 `number`
 
-#### Defined in
+***
 
-[index.ts:128](/packages/timer/src/index.ts#L128)
+### start()
 
-___
+> **start**(`time?`): `Timer`
 
-### start
-
-▸ **start**(`time?`): [`Timer`](Timer.md)
+Defined in: [index.ts:63](/packages/timer/src/index.ts#L63)
 
 Starts the timer
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `time?` | `number` | start time, in milliseconds (optional). |
+##### time?
+
+`number`
+
+start time, in milliseconds (optional).
 
 #### Returns
 
-[`Timer`](Timer.md)
+`Timer`
 
-**`Example`**
+#### Example
 
 ```ts
 timer.start();
@@ -245,7 +220,3 @@ timer.start();
 timer.isRunning(); // true
 timer.isFinished(); // false
 ```
-
-#### Defined in
-
-[index.ts:63](/packages/timer/src/index.ts#L63)

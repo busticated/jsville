@@ -61,7 +61,7 @@ export class Pkg {
 
 		try {
 			({ stdout: version } = await execa('npm', ['view', name, 'version']));
-		} catch (_) {
+		} catch {
 			version = '0.0.0';
 		}
 

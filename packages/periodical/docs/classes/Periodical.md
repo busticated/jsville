@@ -1,8 +1,14 @@
+[**@bust/periodical**](../README.md)
+
+***
+
 # Class: Periodical
+
+Defined in: [index.ts:51](/packages/periodical/src/index.ts#L51)
 
 Main `Periodical` class.
 
-**`Example`**
+## Example
 
 ```ts
 import { Periodical } from '@bust/periodical';
@@ -20,87 +26,65 @@ p.stop();
 p.isRunning(); // false
 ```
 
-## Table of contents
-
-### Constructors
-
-- [constructor](Periodical.md#constructor)
-
-### Properties
-
-- [fn](Periodical.md#fn)
-- [interval](Periodical.md#interval)
-- [timeoutId](Periodical.md#timeoutid)
-
-### Methods
-
-- [exec](Periodical.md#exec)
-- [isRunning](Periodical.md#isrunning)
-- [msUntilNextRun](Periodical.md#msuntilnextrun)
-- [start](Periodical.md#start)
-- [stop](Periodical.md#stop)
-
 ## Constructors
 
-### constructor
+### Constructor
 
-• **new Periodical**(`interval`): [`Periodical`](Periodical.md)
+> **new Periodical**(`interval`): `Periodical`
+
+Defined in: [index.ts:70](/packages/periodical/src/index.ts#L70)
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `interval` | `number` | how often you'd like to run your callback, in milliseconds. |
+##### interval
+
+`number`
+
+how often you'd like to run your callback, in milliseconds.
 
 #### Returns
 
-[`Periodical`](Periodical.md)
-
-#### Defined in
-
-[index.ts:70](/packages/periodical/src/index.ts#L70)
+`Periodical`
 
 ## Properties
 
 ### fn
 
-• **fn**: [`Callback`](../README.md#callback)
+> **fn**: [`Callback`](../type-aliases/Callback.md)
+
+Defined in: [index.ts:60](/packages/periodical/src/index.ts#L60)
 
 your callback function, optionally bound to the context you provide when calling `.start()`.
 
-#### Defined in
-
-[index.ts:60](/packages/periodical/src/index.ts#L60)
-
-___
+***
 
 ### interval
 
-• **interval**: `number`
+> **interval**: `number`
+
+Defined in: [index.ts:55](/packages/periodical/src/index.ts#L55)
 
 the interval in milliseconds.
 
-#### Defined in
-
-[index.ts:55](/packages/periodical/src/index.ts#L55)
-
-___
+***
 
 ### timeoutId
 
-• **timeoutId**: `undefined` \| `Timeout`
+> **timeoutId**: `Timeout` \| `undefined`
+
+Defined in: [index.ts:65](/packages/periodical/src/index.ts#L65)
 
 the id for the last `setTimeout()` call.
 
-#### Defined in
-
-[index.ts:65](/packages/periodical/src/index.ts#L65)
-
 ## Methods
 
-### exec
+### exec()
 
-▸ **exec**(): `void`
+> **exec**(): `void`
+
+Defined in: [index.ts:127](/packages/periodical/src/index.ts#L127)
+
+**`Internal`**
 
 Executes your callback and enqueues the next run / execution
 
@@ -108,15 +92,13 @@ Executes your callback and enqueues the next run / execution
 
 `void`
 
-#### Defined in
+***
 
-[index.ts:127](/packages/periodical/src/index.ts#L127)
+### isRunning()
 
-___
+> **isRunning**(): `boolean`
 
-### isRunning
-
-▸ **isRunning**(): `boolean`
+Defined in: [index.ts:119](/packages/periodical/src/index.ts#L119)
 
 Reports whether or not your periodical is running
 
@@ -124,52 +106,57 @@ Reports whether or not your periodical is running
 
 `boolean`
 
-#### Defined in
+***
 
-[index.ts:119](/packages/periodical/src/index.ts#L119)
+### msUntilNextRun()
 
-___
+> **msUntilNextRun**(`now?`): `number`
 
-### msUntilNextRun
+Defined in: [index.ts:140](/packages/periodical/src/index.ts#L140)
 
-▸ **msUntilNextRun**(`now?`): `number`
+**`Internal`**
 
 Calculates the number of milliseconds until next run / execution
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `now?` | `Date` |
+##### now?
+
+`Date`
 
 #### Returns
 
 `number`
 
-#### Defined in
+***
 
-[index.ts:140](/packages/periodical/src/index.ts#L140)
+### start()
 
-___
+> **start**(`fn`, `ctx?`): `void`
 
-### start
-
-▸ **start**(`fn`, `ctx?`): `void`
+Defined in: [index.ts:97](/packages/periodical/src/index.ts#L97)
 
 Starts your periodical running
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `fn` | [`Callback`](../README.md#callback) | the function you'd like executed |
-| `ctx?` | `object` | the context in which you'd like your function executed (optional) |
+##### fn
+
+[`Callback`](../type-aliases/Callback.md)
+
+the function you'd like executed
+
+##### ctx?
+
+`object`
+
+the context in which you'd like your function executed (optional)
 
 #### Returns
 
 `void`
 
-**`Example`**
+#### Example
 
 ```ts
 const myObj = {
@@ -185,15 +172,13 @@ p.start(myObj.run, myObj);
 p.isRunning(); // 'true'
 ```
 
-#### Defined in
+***
 
-[index.ts:97](/packages/periodical/src/index.ts#L97)
+### stop()
 
-___
+> **stop**(): `void`
 
-### stop
-
-▸ **stop**(): `void`
+Defined in: [index.ts:111](/packages/periodical/src/index.ts#L111)
 
 Stops your periodical
 
@@ -201,13 +186,9 @@ Stops your periodical
 
 `void`
 
-**`Example`**
+#### Example
 
 ```ts
 p.stop();
 p.isRunning(); // 'false'
 ```
-
-#### Defined in
-
-[index.ts:111](/packages/periodical/src/index.ts#L111)
