@@ -154,4 +154,3 @@ function assignTime(ctx: Timer, field: SettableTimerFields, time: any) {
 
 	return ctx;
 }
-

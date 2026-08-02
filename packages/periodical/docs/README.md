@@ -1,3 +1,7 @@
+**@bust/periodical**
+
+***
+
 # @bust/periodical
 
 Runs a given function at a given interval normalized to clock time such that
@@ -16,30 +20,10 @@ you can expect some drift. In practice, it tends not to matter - delta tends
 to be < 5ms - but if you need high-accuracy and ironclad reliability, definitely
 reach for a different tool 🤗
 
-## Table of contents
-
-### Classes
+## Classes
 
 - [Periodical](classes/Periodical.md)
 
-### Type Aliases
-
-- [Callback](README.md#callback)
-
 ## Type Aliases
 
-### Callback
-
-Ƭ **Callback**: () => `void`
-
-#### Type declaration
-
-▸ (): `void`
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[index.ts:21](/packages/periodical/src/index.ts#L21)
+- [Callback](type-aliases/Callback.md)

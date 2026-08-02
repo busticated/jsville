@@ -1,9 +1,9 @@
 export const log = (message) => {
-	console.log(message); // eslint-disable-line no-console
+	console.log(message);
 };
 
 export const logTitle = (message) => {
-	log(`:::: ${message}`); // eslint-disable-line no-console
+	log(`:::: ${message}`);
 };
 
 // https://patorjk.com/software/taag/#p=display&f=Ivrit&t=JSVille
@@ -20,10 +20,8 @@ export const logBanner = () => {
 };
 
 export const logErrorAndExit = (error, code = 1) => {
-	/* eslint-disable no-console */
 	console.error(':::: Whoops!');
 	console.error(error);
 	return process.exit(code);
-	/* eslint-enable no-console */
 };
 

@@ -9,6 +9,7 @@
   },
   "type": "module",
   "main": "./dist/commonjs/index.js",
+  "module": "./dist/esm/index.js",
   "types": "./dist/commonjs/index.d.ts",
   "files": [
     "CHANGELOG.md",
@@ -37,8 +38,7 @@
   "scripts": {
     "version": "npm run changelog:update && npm run docs:build",
     "prepare": "npm run build",
-    "test": "npm run build && node --test --test-reporter spec --enable-source-maps dist/esm/*.test.js",
-    "test:coverage": "npm run build && NODE_V8_COVERAGE=tmp/coverage node --test --test-reporter spec --experimental-test-coverage --enable-source-maps dist/esm/*.test.js",
+    "test": "npm run build && node --test --test-reporter spec --experimental-test-coverage --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 --enable-source-maps dist/esm/*.test.js",
     "typecheck": "tsc --noemit",
     "build": "tshy",
     "clean": "rm -rf ./dist && rm -rf ./tmp/*",
@@ -50,7 +50,7 @@
     "changelog:update": "node ../../bin/update-changelog.mjs @bust/periodical"
   },
   "engines": {
-    "node": ">=18",
-    "npm": "10.x"
+    "node": ">=22",
+    "npm": ">=10"
   }
 }
