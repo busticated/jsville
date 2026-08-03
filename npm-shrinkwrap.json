@@ -58,6 +58,10 @@
         "node": ">=6.9.0"
       }
     },
+    "node_modules/@bust/config": {
+      "resolved": "packages/config",
+      "link": true
+    },
     "node_modules/@bust/numeric-id-hasher": {
       "resolved": "packages/numeric-id-hasher",
       "link": true
@@ -8035,9 +8039,18 @@
         "url": "https://github.com/sponsors/sindresorhus"
       }
     },
+    "packages/config": {
+      "name": "@bust/config",
+      "version": "0.0.0",
+      "license": "(MIT OR Apache-2.0)",
+      "engines": {
+        "node": ">=22",
+        "npm": ">=10"
+      }
+    },
     "packages/numeric-id-hasher": {
       "name": "@bust/numeric-id-hasher",
-      "version": "1.0.1",
+      "version": "2.0.0",
       "license": "(MIT OR Apache-2.0)",
       "engines": {
         "node": ">=22",
@@ -8046,7 +8059,7 @@
     },
     "packages/periodical": {
       "name": "@bust/periodical",
-      "version": "1.0.1",
+      "version": "2.0.0",
       "license": "(MIT OR Apache-2.0)",
       "engines": {
         "node": ">=22",
@@ -8055,7 +8068,7 @@
     },
     "packages/timer": {
       "name": "@bust/timer",
-      "version": "1.0.1",
+      "version": "2.0.0",
       "license": "(MIT OR Apache-2.0)",
       "engines": {
         "node": ">=22",
