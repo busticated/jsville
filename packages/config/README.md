@@ -64,7 +64,7 @@ export default defineConfig({
 
 ## API
 <!-- api-docs-start -->
-see [here](https://github.com/busticated/jsville/tree/%40bust%2Fconfig%400.0.0/packages/config/docs)
+see [here](https://github.com/busticated/jsville/tree/%40bust%2Fconfig%400.1.0/packages/config/docs)
 <!-- api-docs-end -->
 
 _NOTE: When in doubt, check usage in the [tests](./src/config.test.ts)_
