@@ -38,7 +38,8 @@
   "scripts": {
     "version": "npm run changelog:update && npm run docs:build",
     "prepare": "npm run build",
-    "test": "npm run build && node --test --test-reporter spec --experimental-test-coverage --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 --enable-source-maps dist/esm/*.test.js",
+    "test:unit": "npm run build && node --test --test-reporter spec --experimental-test-coverage --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 --enable-source-maps dist/esm/*.test.js",
+    "test:e2e": "echo \"Zero e2e tests to run!\" && exit 0",
     "typecheck": "tsc --noemit",
     "build": "tshy",
     "clean": "rm -rf ./dist && rm -rf ./tmp/*",
