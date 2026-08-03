@@ -19,6 +19,8 @@ An every-growing collection of JavaScript utility packages targeting Node.js and
 ## Packages
 
 <!-- pkg-list-start -->
+* [@bust/config](packages/config)
+	* Schema-driven configuration management for Node.js or the browser
 * [@bust/numeric-id-hasher](packages/numeric-id-hasher)
 	* Encode / decode bigints as string hashes for use in shortened urls
 * [@bust/periodical](packages/periodical)
