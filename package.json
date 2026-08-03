@@ -10,10 +10,12 @@
   ],
   "scripts": {
     "start": "echo \"Error: no source code available\" && exit 1",
-    "test": "npm run lint && npm run typecheck && npm run test --workspaces",
+    "test": "npm run lint && npm run typecheck && npm run test:unit",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "typecheck": "npm run typecheck --workspaces",
+    "test:unit": "npm run test:unit --workspaces",
+    "test:e2e": "npm run test:e2e --workspaces",
     "build": "npm run build --workspaces",
     "clean": "npm run clean --workspaces",
     "clean:modules": "npm run clean:modules --workspaces",
