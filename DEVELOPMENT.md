@@ -73,7 +73,7 @@ npm uninstall cowsay --workspace packages/timer
 Simply run:
 
 ```shell
-npm run outdated
+npm outdated
 ```
 
 This will output a list of outdated dependencies, if any. From there you can update as appropriate - see ["How to add, remove, and update package dependencies"](#user-content-develop-add-remove-package-deps)
@@ -103,7 +103,7 @@ e.g.
 npm test -- --workspace packages/timer
 ```
 
-`npm test` reports code coverage alongside test results and fails if line, branch, or function coverage drops below 100%.
+`npm test` reports code coverage alongside test results and fails if coverage drops below the thresholds set in each package's `test:unit` script.
 
 Run `npm run` to see other test-related commands, if available.
 
@@ -176,6 +176,27 @@ Run `npm run` to see other docs-related commands, if available.
 </p>
 </details>
 
+<details id="develop-clean">
+<summary>
+	<b>How to clean up built artifacts</b>
+</summary>
+<p>
+
+From time to time you will find it necessary to clean up / remove build artifacts. Often this is the first step when encountering broken builds while running locally. Though a rare occurrence, typically this happens after major updates to dependencies or similar:
+
+```
+npm run clean
+```
+
+> [!NOTE]
+> This will also delete the contents of the `./tmp` directory. If there is data you'd like to keep, copy it out before running this command.
+
+
+Run `npm run` to see other clean-related commands, if available.
+
+</p>
+</details>
+
 <details id="develop-changelog">
 <summary><b>How to format commits for changelogs</b></summary>
 <p>
@@ -183,7 +204,7 @@ Run `npm run` to see other docs-related commands, if available.
 In order to support automated changelog updates, you will need to:
 
 * Commit package changes separately - e.g. run: `git add -p packages/<name>/*` to stage files, then commit
-* Format your commit message like: `[<package-name>] <message>` e.g. `[timer] update docs`
+* Format your commit message like: `[<package directory name>] <message>` e.g. `[timer] update docs`
 * Commit changes to the root package itself (anyting outside of the `./packages` directory) separately without prefixing your commit message
 
 Each package has its own changelog ([example](packages/timer/CHANGELOG.md)). Upon releasing, each changelog will be updated with the changes made to that package since its last release.
@@ -191,7 +212,7 @@ Each package has its own changelog ([example](packages/timer/CHANGELOG.md)). Upo
 To view unpublished changelog entries for all packages, run:
 
 ```
-npm run changelog
+npm run changelog:show
 ```
 
 Run `npm run` to see other changelog-related commands, if available.
@@ -203,7 +224,7 @@ Run `npm run` to see other changelog-related commands, if available.
 <summary><b>How to name and locate your package's files</b></summary>
 <p>
 
-Package files should follow a standard naming scheme and layout. Source files live within your package's `./src` directory. Test files live alongside their source files and are named like `*.test.ts`. All file and directory names are lowercase hyphen-separated (aka "kebab-case").
+Package files should follow a standard naming scheme and layout. Source files live within your package's `./src` directory. Test files live alongside their source files and are named like `*.test.ts` or `*.test.mts`. All file and directory names are lowercase hyphen-separated (aka "kebab-case").
 
 ```
 my-package
@@ -234,6 +255,10 @@ my-package
 └── ...
 ```
 
+> [!TIP]
+> The list above is _not exhaustive_ - it's meant only as a starting point to understand a package's structure.
+
+
 </p>
 </details>
 
@@ -252,6 +277,40 @@ When creating a new script, be sure it does not already exist and use the follow
 Standard categories include: `test`, `lint`, `typecheck`, `build`, `clean`, `docs`, `package`, and `release`. `npm` itself includes special handling for `test` and `start` (doc: [1](https://docs.npmjs.com/cli/commands/npm-test), [2](https://docs.npmjs.com/cli/commands/npm-start)) amongst other [lifecycle scripts](https://docs.npmjs.com/cli/using-npm/scripts#life-cycle-scripts) - use these to expose key testing and start-up commands.
 
 Sometimes your new script will be very similar to an existing script. in those cases, try to extend the existing script before adding another one.
+
+</p>
+</details>
+
+<details id="develop-modules">
+<summary>
+	<b>How to work with modules</b>
+</summary>
+<p>
+
+We exclusively use "ES Modules" syntax ([docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)) with Typescript extensions ([docs](https://www.typescriptlang.org/docs/handbook/2/modules.html#typescript-specific-es-module-syntax)). There are a handful of formatting preferences to adhere to:
+
+* bare imports (aka "side-effect imports") are at the very top
+* 3rd-party imports are below bare imports but above 1st-party imports
+* within each group above, `type` exclusive imports are above non-type-exclusive imports
+* all `type` imports are marked accordingly
+* 1st-party imports _always_ include the file extension - specifically the _emitted_ extension: `.js` for a `.ts` source, `.mjs` for `.mts`
+* non-type circular imports are _never allowed_
+
+Here's an example showing all common forms:
+
+```
+import 'some-package/setup.js';
+import type { Widget } from 'some-package';
+import { createWidget, type WidgetOptions } from 'other-package';
+import type { ThingConfig } from './types.js';
+import { Thing, type ThingOptions } from './thing.js';
+import { formatLabel } from './lib/format.js';
+```
+
+> [!TIP]
+> The list above is an _example_ - the specific imports shown above are not necessarily in the actual codebase.
+
+
 
 </p>
 </details>
@@ -284,15 +343,15 @@ e.g.
 ## Conventions
 
 * [npm scripts](https://docs.npmjs.com/misc/scripts) form the _developer's API_ for the repo and all of its packages - key orchestration commands should be exposed here
-* Document developer-facing process / tooling instructions in the [Development](#development) section
+* Document developer-facing process / tooling instructions in the [How-Tos & FAQs](#how-tos--faqs) section
 * Any package with unpublished changes will be published with the next release
 * Plan to release your changes upon merging to `main` - refrain from merging if you cannot so you don't leave unpublished changes to others
 * Commit package changes separately - e.g. run: `git add -p packages/<name>/*`, commit, then run `git add -p packages/<other-name>/*`, and commit
-* Commit messages use a prefix formatted like `[<package directory name>] <message>` e.g. `[timer] update docs`
+* Commit messages use a prefix formatted like `[<package-directory-name>] <message>` e.g. `[timer] update docs`
 * Changes to the root package are committed separately and without prefixing the commit message
 * All file and directory names are lowercase hyphen-separated (aka "kebab-case")
-* Test files live alongside their source files and are named like `*.test.ts`
-* Todo comments include your last name and are formatted like: `TODO (mirande): <message>`
+* Test files live alongside their source files and are named like `*.test.ts` or `*.test.mts`
+* Todo comments include your handle and are formatted like: `TODO (busticated): <message>`
 
 
 ## Docs & Resources

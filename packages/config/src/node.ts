@@ -1,5 +1,5 @@
-import type { SettingsSchemaTree, ConfigEnvVars } from './types.js';
 import dotenv from 'dotenv';
+import type { SettingsSchemaTree, ConfigEnvVars } from './types.js';
 import { Config, CONFIG_GLOBAL_NAME } from './config.js';
 
 export { type SettingsSchemaTree, type ConfigEnvVars, Config, CONFIG_GLOBAL_NAME };
