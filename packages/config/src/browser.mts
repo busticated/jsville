@@ -39,11 +39,14 @@ export function getBrowserEnv(): ConfigEnvVars {
  * // elsewhere.ts
  * import { config } from './config.js';
  *
- * config.get('app.name');
+ * config.get('app.name'); // string - typed from the schema above
  * ```
+ *
+ * The schema's shape is captured as `S`, so `config.get()` accepts only the
+ * keys it declares and returns the type each one holds.
  *
  * See `getBrowserDefine()` in `node.ts` for the bundler side of this.
  */
-export function createConfig(schema: SettingsSchemaTree): Config {
-	return new Config({ schema, env: getBrowserEnv() });
+export function createConfig<const S extends SettingsSchemaTree>(schema: S): Config<S> {
+	return new Config<S>({ schema, env: getBrowserEnv() });
 }

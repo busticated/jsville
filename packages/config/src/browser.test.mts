@@ -31,6 +31,24 @@ describe('@bust/config/browser', () => {
 		});
 	});
 
+	describe('Schema-derived types', () => {
+		it('Types keys and values from the schema, same as the Node entry point', () => {
+			const config = createConfig({
+				app: {
+					name: { default: 'My App', env: 'MY_APP_NAME' },
+					mode: { default: 'light', format: ['light', 'dark'] },
+				},
+			});
+			const name: string = config.get('app.name');
+			const mode: 'light' | 'dark' = config.get('app.mode');
+
+			// @ts-expect-error - 'app.nmae' is a typo, not a declared key
+			assert.throws(() => config.get('app.nmae'));
+			assert.strictEqual(name, 'My App');
+			assert.strictEqual(mode, 'light');
+		});
+	});
+
 	describe('getBrowserEnv', () => {
 		it('Falls back to an empty object when nothing was baked in', () => {
 			assert.deepEqual(getBrowserEnv(), {});

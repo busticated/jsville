@@ -2,9 +2,9 @@
 
 ***
 
-# Class: Config
+# Class: Config\<S\>
 
-Defined in: [config.ts:46](/packages/config/src/config.ts#L46)
+Defined in: [config.ts:54](/packages/config/src/config.ts#L54)
 
 Schema-driven configuration store. Given a [SettingsSchemaTree](../../node/interfaces/SettingsSchemaTree.md) and a
 map of environment variables, hydrates each leaf setting's value from the
@@ -30,13 +30,25 @@ const config = new Config({
 config.get('app.name'); // 'My App', or the value of `process.env.MY_APP_NAME`, if set
 ```
 
+`S` carries the shape of the schema so `get()` can resolve a key to the
+type that key holds. It is inferred by `createConfig()` in
+`node.ts`/`browser.mts`; constructing a `Config` directly leaves it at the
+default, where keys are plain strings and values the full
+SettingsValue union.
+
+## Type Parameters
+
+### S
+
+`S` *extends* [`SettingsSchemaTree`](../../node/interfaces/SettingsSchemaTree.md) = [`SettingsSchemaTree`](../../node/interfaces/SettingsSchemaTree.md)
+
 ## Constructors
 
 ### Constructor
 
-> **new Config**(`__namedParameters?`): `Config`
+> **new Config**\<`S`\>(`__namedParameters?`): `Config`\<`S`\>
 
-Defined in: [config.ts:49](/packages/config/src/config.ts#L49)
+Defined in: [config.ts:57](/packages/config/src/config.ts#L57)
 
 #### Parameters
 
@@ -46,7 +58,7 @@ Defined in: [config.ts:49](/packages/config/src/config.ts#L49)
 
 #### Returns
 
-`Config`
+`Config`\<`S`\>
 
 ## Properties
 
@@ -54,27 +66,33 @@ Defined in: [config.ts:49](/packages/config/src/config.ts#L49)
 
 > **settings**: `Settings`
 
-Defined in: [config.ts:47](/packages/config/src/config.ts#L47)
+Defined in: [config.ts:55](/packages/config/src/config.ts#L55)
 
 ## Methods
 
 ### get()
 
-> **get**(`key`): `SettingsValue`
+> **get**\<`K`\>(`key`): `SettingsValueAt`\<`S`, `K`\>
 
-Defined in: [config.ts:58](/packages/config/src/config.ts#L58)
+Defined in: [config.ts:66](/packages/config/src/config.ts#L66)
 
 Looks up a single setting's hydrated value by its dot-delimited key.
+
+#### Type Parameters
+
+##### K
+
+`K` *extends* `string`
 
 #### Parameters
 
 ##### key
 
-`string`
+`K`
 
 #### Returns
 
-`SettingsValue`
+`SettingsValueAt`\<`S`, `K`\>
 
 #### Throws
 
@@ -86,7 +104,7 @@ if `key` isn't present in the hydrated schema
 
 > **getPublicEnvVars**(): [`ConfigEnvVars`](../../node/interfaces/ConfigEnvVars.md)
 
-Defined in: [config.ts:87](/packages/config/src/config.ts#L87)
+Defined in: [config.ts:95](/packages/config/src/config.ts#L95)
 
 Returns every public setting's value keyed by its *environment variable
 name* rather than its schema path.
@@ -101,7 +119,7 @@ name* rather than its schema path.
 
 > **getPublicSettings**(): `PublicSettings`
 
-Defined in: [config.ts:69](/packages/config/src/config.ts#L69)
+Defined in: [config.ts:77](/packages/config/src/config.ts#L77)
 
 Returns every hydrated setting marked `public: true`, keyed by dot-delimited path.
 
@@ -115,7 +133,7 @@ Returns every hydrated setting marked `public: true`, keyed by dot-delimited pat
 
 > **hydrate**(`data`, `env?`): `Settings`
 
-Defined in: [config.ts:110](/packages/config/src/config.ts#L110)
+Defined in: [config.ts:118](/packages/config/src/config.ts#L118)
 
 Walks a [SettingsSchemaTree](../../node/interfaces/SettingsSchemaTree.md), resolving each leaf's format,
 coercing/validating its value from `env` (or its default), and

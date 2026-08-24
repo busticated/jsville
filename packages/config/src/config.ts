@@ -1,6 +1,8 @@
 import type {
 	SettingsKey,
+	SettingsKeyOf,
 	SettingsValue,
+	SettingsValueAt,
 	SettingsFormat,
 	SettingsFormatName,
 	SettingsSpecInput,
@@ -42,8 +44,14 @@ export const CONFIG_GLOBAL_NAME = '__BUST_CONFIG__';
  *
  * config.get('app.name'); // 'My App', or the value of `process.env.MY_APP_NAME`, if set
  * ```
+ *
+ * `S` carries the shape of the schema so `get()` can resolve a key to the
+ * type that key holds. It is inferred by `createConfig()` in
+ * `node.ts`/`browser.mts`; constructing a `Config` directly leaves it at the
+ * default, where keys are plain strings and values the full
+ * {@link SettingsValue} union.
  */
-export class Config {
+export class Config<S extends SettingsSchemaTree = SettingsSchemaTree> {
 	settings: Settings;
 
 	constructor({ schema = {}, env = {} }: ConfigOptions = {}) {
@@ -55,14 +63,14 @@ export class Config {
 	 *
 	 * @throws if `key` isn't present in the hydrated schema
 	 */
-	get(key: SettingsKey): SettingsValue {
+	get<K extends SettingsKeyOf<S> & string>(key: K): SettingsValueAt<S, K> {
 		const spec = this.settings.get(key);
 
 		if (!spec) {
 			throw new Error(`'${key}' is not available - please ensure you've set it`);
 		}
 
-		return spec.value;
+		return spec.value as SettingsValueAt<S, K>;
 	}
 
 	/** Returns every hydrated setting marked `public: true`, keyed by dot-delimited path. */
@@ -200,7 +208,7 @@ function format(x: SettingsValue | undefined, key: SettingsKey, spec: SettingsSp
 
 const validators: Record<string, Validator> = {
 	enum: function(key, spec) {
-		const allowed = spec.format as string[];
+		const allowed = spec.format as readonly string[];
 
 		if (!allowed.includes(spec.value as string)) {
 			throw new Error(`'${key}': must be one of ${allowed.join('|')}`);

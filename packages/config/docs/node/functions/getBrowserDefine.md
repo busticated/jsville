@@ -4,9 +4,9 @@
 
 # Function: getBrowserDefine()
 
-> **getBrowserDefine**(`config`): `Record`\<`string`, [`ConfigEnvVars`](../interfaces/ConfigEnvVars.md)\>
+> **getBrowserDefine**\<`S`\>(`config`): `Record`\<`string`, [`ConfigEnvVars`](../interfaces/ConfigEnvVars.md)\>
 
-Defined in: [node.ts:59](/packages/config/src/node.ts#L59)
+Defined in: [node.ts:62](/packages/config/src/node.ts#L62)
 
 Produces a Vite `define` entry that exposes only `config`'s `public: true`
 settings to a browser build - `createConfig()` in the browser reads this
@@ -14,11 +14,17 @@ same blob back out at runtime via [CONFIG\_GLOBAL\_NAME](../../config/variables/
 leave the Node process beyond what `getPublicEnvVars()` already returns, so
 there's no separate `VITE_`-prefixed env var to keep in sync with `schema`.
 
+## Type Parameters
+
+### S
+
+`S` *extends* [`SettingsSchemaTree`](../interfaces/SettingsSchemaTree.md)
+
 ## Parameters
 
 ### config
 
-[`Config`](../../config/classes/Config.md)
+[`Config`](../../config/classes/Config.md)\<`S`\>
 
 ## Returns
 

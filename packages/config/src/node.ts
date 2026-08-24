@@ -30,11 +30,14 @@ dotenv.config({ quiet: true }); // silence log spam / ads from dotenv v17 | http
  * // elsewhere.ts
  * import { config } from './config.ts';
  *
- * config.get('app.name');
+ * config.get('app.name'); // string - typed from the schema above
  * ```
+ *
+ * The schema's shape is captured as `S`, so `config.get()` accepts only the
+ * keys it declares and returns the type each one holds.
  */
-export function createConfig(schema: SettingsSchemaTree): Config {
-	return new Config({ schema, env: process.env });
+export function createConfig<const S extends SettingsSchemaTree>(schema: S): Config<S> {
+	return new Config<S>({ schema, env: process.env });
 }
 
 /**
@@ -56,6 +59,6 @@ export function createConfig(schema: SettingsSchemaTree): Config {
  * });
  * ```
  */
-export function getBrowserDefine(config: Config): Record<string, ConfigEnvVars> {
+export function getBrowserDefine<S extends SettingsSchemaTree>(config: Config<S>): Record<string, ConfigEnvVars> {
 	return { [CONFIG_GLOBAL_NAME]: config.getPublicEnvVars() };
 }
