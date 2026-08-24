@@ -48,7 +48,7 @@ describe('@bust/numeric-id-hasher', () => {
 			{ id: '55555', hash: 'M4p' },
 			{ id: '676767676767676767', hash: '5DLHvp97zSB' },
 			{ id: '898989898989898989', hash: '6GFqXGaDBhr' },
-			{ id: '10000000000000000000000000', hash: '7aDn7BhWK5E4NvC' }
+			{ id: '10000000000000000000000000', hash: '7aDn7BhWK5E4NvC' },
 		];
 	}
 });

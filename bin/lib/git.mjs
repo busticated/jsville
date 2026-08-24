@@ -25,5 +25,14 @@ export class Git {
 	async log(args, options) {
 		return this.exec(['log', ...args], options);
 	}
+
+	async hasTag(tag, options) {
+		try {
+			await this.exec(['rev-parse', '--verify', '--quiet', `refs/tags/${tag}`], options);
+			return true;
+		} catch {
+			return false;
+		}
+	}
 }
 

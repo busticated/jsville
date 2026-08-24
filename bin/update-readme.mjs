@@ -13,7 +13,7 @@ const PKGLIST_MARKER_END = '<!-- pkg-list-end -->';
 
 
 try {
-	logTitle(`Updating package list in top-level README...`);
+	logTitle('Updating package list in top-level README...');
 	const pkgs = await getPkgs(PACKAGES_DIR);
 	const listMarkdown = renderPackageList(pkgs);
 	const readme = await fs.readFile(README_PATH, 'utf8');
