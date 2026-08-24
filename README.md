@@ -21,6 +21,8 @@ An every-growing collection of JavaScript utility packages targeting Node.js and
 <!-- pkg-list-start -->
 * [@bust/config](packages/config)
 	* Schema-driven configuration management for Node.js or the browser
+* [@bust/eslint-config](packages/eslint-config)
+	* Shared ESLint configuration for Busticated JS/TS projects
 * [@bust/numeric-id-hasher](packages/numeric-id-hasher)
 	* Encode / decode bigints as string hashes for use in shortened urls
 * [@bust/periodical](packages/periodical)
