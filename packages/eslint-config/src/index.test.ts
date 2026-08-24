@@ -27,7 +27,7 @@ describe('@bust/eslint-config', () => {
 		});
 
 		it('Registers the TypeScript-aware variants of the shared rules', () => {
-			const rules = blockNamed(bust(), 'bust/typescript').rules ?? {};
+			const rules = rulesOf(blockNamed(bust(), 'bust/typescript'));
 			assert.ok(rules['@typescript-eslint/no-unused-vars']);
 			assert.ok(rules['@typescript-eslint/no-use-before-define']);
 			assert.equal(rules['no-use-before-define'], 'off');
@@ -53,7 +53,7 @@ describe('@bust/eslint-config', () => {
 		});
 
 		it('Falls back to the core `no-unused-vars` with the same options', () => {
-			const rules = blockNamed(bust({ typescript: false }), 'bust/javascript').rules ?? {};
+			const rules = rulesOf(blockNamed(bust({ typescript: false }), 'bust/javascript'));
 			assert.deepEqual(rules['no-unused-vars'], ['error', {
 				argsIgnorePattern: '^_',
 				varsIgnorePattern: '^_',
@@ -122,7 +122,7 @@ describe('@bust/eslint-config', () => {
 	describe('Node test runner', () => {
 		it('Relaxes the type-aware rule its `describe()` and `it()` trip', () => {
 			const block = blockNamed(bust({ nodeTest: true }), 'bust/node-test');
-			assert.equal(block.rules?.['@typescript-eslint/no-floating-promises'], 'off');
+			assert.equal(rulesOf(block)['@typescript-eslint/no-floating-promises'], 'off');
 		});
 
 		it('Covers the spec, e2e, and integration suites too', () => {
@@ -155,13 +155,29 @@ describe('@bust/eslint-config', () => {
 	// the plugin configs we compose carry their own names; these assertions are
 	// about the blocks this package contributes
 	function namesOf(configs: LinterTypes.Config[]): string[] {
-		return configs
-			.map((config) => config.name)
-			.filter((name): name is string => typeof name === 'string' && name.startsWith('bust/'));
+		const names: string[] = [];
+
+		for (const config of configs) {
+			const name = String(config.name);
+
+			if (name.startsWith('bust/')) {
+				names.push(name);
+			}
+		}
+
+		return names;
 	}
 
+	// these read blocks this package builds, so they skip the optional-chaining
+	// fallbacks - unreachable branches cost branch coverage on node 22, which
+	// counts test files where node 24 does not
 	function parserOptionsOf(config: LinterTypes.Config): Record<string, unknown> {
-		return (config.languageOptions?.parserOptions ?? {}) as Record<string, unknown>;
+		const { languageOptions } = config as { languageOptions: { parserOptions: Record<string, unknown> } };
+		return languageOptions.parserOptions;
+	}
+
+	function rulesOf(config: LinterTypes.Config): Record<string, unknown> {
+		return (config as { rules: Record<string, unknown> }).rules;
 	}
 
 	function blockNamed(configs: LinterTypes.Config[], name: string): LinterTypes.Config {
