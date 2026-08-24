@@ -20,8 +20,8 @@ export const loadTemplates = async () => {
 		templates[key] = _.template(tmplData, {
 			imports: {
 				camelCase: _.camelCase,
-				upperFirst: _.upperFirst
-			}
+				upperFirst: _.upperFirst,
+			},
 		});
 	}
 

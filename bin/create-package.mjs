@@ -25,7 +25,7 @@ try {
 		licenseMD,
 		packageJSON,
 		readmeMD,
-		tsconfigJSON
+		tsconfigJSON,
 	} = await loadTemplates();
 
 	await Promise.all([
@@ -35,7 +35,7 @@ try {
 		fs.outputFile(path.join(pkg.path, 'package.json'), packageJSON(pkg)),
 		fs.outputFile(path.join(pkg.path, 'tsconfig.json'), tsconfigJSON(pkg)),
 		fs.outputFile(path.join(pkg.path, 'src', 'index.test.ts'), indexTestTS(pkg)),
-		fs.outputFile(path.join(pkg.path, 'src', 'index.ts'), indexTS(pkg))
+		fs.outputFile(path.join(pkg.path, 'src', 'index.ts'), indexTS(pkg)),
 	]);
 
 	await execa('npm', ['install'], { stdio: 'inherit' }); // so root lockfile includes new package
@@ -73,14 +73,14 @@ async function promptForPackageInfo(cli){
 					return `Directory "${pkg.path}" already exists! please choose a different name.`;
 				}
 				return true;
-			}
+			},
 		},
 		{
 			type: 'input',
 			name: 'description',
 			message: 'What does your package do?',
-			result: (description) => description || ''
-		}
+			result: (description) => description || '',
+		},
 	]);
 
 	return new Pkg({ name, description });

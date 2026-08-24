@@ -12,7 +12,6 @@ const README_MARKER_START = '<!-- api-docs-start -->';
 const README_MARKER_END = '<!-- api-docs-end -->';
 
 
-
 export class Pkg {
 	static async createFromDisk(name) {
 		const pkg = new Pkg({ name });
@@ -106,7 +105,7 @@ export class Pkg {
 		lines.push('\n');
 
 		return this.writeChangelog(
-			content.replace(ptn, lines.join(''))
+			content.replace(ptn, lines.join('')),
 		);
 	}
 
@@ -132,7 +131,7 @@ export class Pkg {
 		];
 
 		return this.writeReadme(
-			content.replace(ptn, link.join('\n'))
+			content.replace(ptn, link.join('\n')),
 		);
 	}
 }
