@@ -6,7 +6,7 @@
 
 > **bust**(`options?`): `Config`\<`RulesConfig`\>[]
 
-Defined in: [index.ts:119](/packages/eslint-config/src/index.ts#L119)
+Defined in: [index.ts:130](/packages/eslint-config/src/index.ts#L130)
 
 Builds the shared ESLint configuration.
 

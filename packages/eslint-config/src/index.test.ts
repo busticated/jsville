@@ -119,6 +119,27 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
+	describe('Node test runner', () => {
+		it('Relaxes the type-aware rule its `describe()` and `it()` trip', () => {
+			const block = blockNamed(bust({ nodeTest: true }), 'bust/node-test');
+			assert.equal(block.rules?.['@typescript-eslint/no-floating-promises'], 'off');
+		});
+
+		it('Covers the spec, e2e, and integration suites too', () => {
+			const block = blockNamed(bust({ nodeTest: true }), 'bust/node-test');
+			assert.deepEqual(block.files, ['**/*.{spec,test,e2e,integration}.{js,jsx,ts,tsx,mjs,mts}']);
+		});
+
+		it('Is skipped when there are no type-aware rules to relax', () => {
+			const names = namesOf(bust({ nodeTest: true, typeAware: false }));
+			assert.equal(names.includes('bust/node-test'), false);
+		});
+
+		it('Is absent unless asked for', () => {
+			assert.equal(namesOf(bust()).includes('bust/node-test'), false);
+		});
+	});
+
 	describe('Vitest', () => {
 		it('Adds a block scoped to test files', () => {
 			const block = blockNamed(bust({ vitest: true }), 'bust/vitest');

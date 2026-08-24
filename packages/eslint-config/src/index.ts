@@ -7,6 +7,9 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
+/** Files Node's test runner drives - it owns the e2e and integration suites too. */
+const NODE_TEST_FILES = ['**/*.{spec,test,e2e,integration}.{js,jsx,ts,tsx,mjs,mts}'];
+
 /** Build output and scratch directories every project here ignores. */
 export const DEFAULT_IGNORES = ['**/dist/', '**/coverage/', '**/tmp/'];
 
@@ -57,6 +60,13 @@ export interface BustConfigOptions {
 	 */
 	vitest?: boolean;
 	/**
+	 * Relax the type-aware rules that Node's test runner trips over. Has no
+	 * effect without `typeAware`, which is what turns those rules on.
+	 *
+	 * @defaultValue false
+	 */
+	nodeTest?: boolean;
+	/**
 	 * Where the type-aware project service looks for `tsconfig.json`.
 	 *
 	 * @defaultValue `process.cwd()`
@@ -76,6 +86,7 @@ export interface BustConfigOptions {
 function resolveOptions(options: BustConfigOptions): Required<Omit<BustConfigOptions, 'allowDefaultProject'>>
 	& Pick<BustConfigOptions, 'allowDefaultProject'> {
 	return {
+		nodeTest: options.nodeTest ?? false,
 		typescript: options.typescript ?? true,
 		typeAware: options.typeAware ?? true,
 		react: options.react ?? false,
@@ -121,6 +132,7 @@ export function bust(options: BustConfigOptions = {}): Linter.Config[] {
 		typescript,
 		typeAware,
 		react,
+		nodeTest,
 		vitest: withVitest,
 		tsconfigRootDir,
 		allowDefaultProject,
@@ -220,7 +232,9 @@ export function bust(options: BustConfigOptions = {}): Linter.Config[] {
 			},
 		});
 
-	if (typescript && typeAware) {
+	const typeChecked = typescript && typeAware;
+
+	if (typeChecked) {
 		configs.push({
 			name: 'bust/type-aware',
 			// scoped to TypeScript: the project service throws on any file the
@@ -238,6 +252,19 @@ export function bust(options: BustConfigOptions = {}): Linter.Config[] {
 				'@typescript-eslint/await-thenable': 'error',
 				'@typescript-eslint/no-floating-promises': 'error',
 				'@typescript-eslint/no-misused-promises': 'error',
+			},
+		});
+	}
+
+	if (typeChecked && nodeTest) {
+		configs.push({
+			name: 'bust/node-test',
+			files: NODE_TEST_FILES,
+			rules: {
+				// `describe()` and `it()` return promises nobody is meant to
+				// await - the rule is right about the type and wrong about
+				// this runner
+				'@typescript-eslint/no-floating-promises': 'off',
 			},
 		});
 	}

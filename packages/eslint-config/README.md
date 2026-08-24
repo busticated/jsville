@@ -41,6 +41,10 @@ export default bust({
 export default bust({ typescript: false });
 ```
 
+### Test runners
+
+`vitest: true` adds Vitest's recommended rules. `nodeTest: true` is for projects on `node:test`, where `describe()` and `it()` return promises nobody awaits - it relaxes `no-floating-promises` across the spec, test, e2e, and integration suites, and does nothing when the type-aware rules are off.
+
 ### Type-aware rules
 
 These are on by default and need your `tsconfig.json` to cover every file being linted. A file the tsconfig lists but excludes - an `eslint.config.js` in a project without `allowJs`, say - needs naming explicitly:

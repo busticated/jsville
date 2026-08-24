@@ -4,7 +4,7 @@
 
 # Interface: BustConfigOptions
 
-Defined in: [index.ts:28](/packages/eslint-config/src/index.ts#L28)
+Defined in: [index.ts:31](/packages/eslint-config/src/index.ts#L31)
 
 Options accepted by [bust](../functions/bust.md).
 
@@ -14,7 +14,7 @@ Options accepted by [bust](../functions/bust.md).
 
 > `optional` **allowDefaultProject?**: `string`[]
 
-Defined in: [index.ts:70](/packages/eslint-config/src/index.ts#L70)
+Defined in: [index.ts:80](/packages/eslint-config/src/index.ts#L80)
 
 Files to type-check outside the project's `tsconfig.json` - an
 `eslint.config.js` that the tsconfig lists but `allowJs` excludes, for
@@ -26,9 +26,26 @@ instance.
 
 > `optional` **ignores?**: `string`[]
 
-Defined in: [index.ts:72](/packages/eslint-config/src/index.ts#L72)
+Defined in: [index.ts:82](/packages/eslint-config/src/index.ts#L82)
 
 Paths to ignore, added to [DEFAULT\_IGNORES](../variables/DEFAULT_IGNORES.md).
+
+***
+
+### nodeTest?
+
+> `optional` **nodeTest?**: `boolean`
+
+Defined in: [index.ts:68](/packages/eslint-config/src/index.ts#L68)
+
+Relax the type-aware rules that Node's test runner trips over. Has no
+effect without `typeAware`, which is what turns those rules on.
+
+#### Default Value
+
+```ts
+false
+```
 
 ***
 
@@ -36,7 +53,7 @@ Paths to ignore, added to [DEFAULT\_IGNORES](../variables/DEFAULT_IGNORES.md).
 
 > `optional` **react?**: `boolean`
 
-Defined in: [index.ts:52](/packages/eslint-config/src/index.ts#L52)
+Defined in: [index.ts:55](/packages/eslint-config/src/index.ts#L55)
 
 Add React rules: `@eslint-react` plus the hooks plugin, and the JSX
 half of the stylistic rules.
@@ -53,7 +70,7 @@ false
 
 > `optional` **tsconfigRootDir?**: `string`
 
-Defined in: [index.ts:64](/packages/eslint-config/src/index.ts#L64)
+Defined in: [index.ts:74](/packages/eslint-config/src/index.ts#L74)
 
 Where the type-aware project service looks for `tsconfig.json`.
 
@@ -67,7 +84,7 @@ Where the type-aware project service looks for `tsconfig.json`.
 
 > `optional` **typeAware?**: `boolean`
 
-Defined in: [index.ts:45](/packages/eslint-config/src/index.ts#L45)
+Defined in: [index.ts:48](/packages/eslint-config/src/index.ts#L48)
 
 Add the rules that need type information - the ones that catch a
 promise nobody awaited. Requires `typescript`, and requires the
@@ -85,7 +102,7 @@ true
 
 > `optional` **typescript?**: `boolean`
 
-Defined in: [index.ts:37](/packages/eslint-config/src/index.ts#L37)
+Defined in: [index.ts:40](/packages/eslint-config/src/index.ts#L40)
 
 Lint TypeScript. Adds `typescript-eslint`'s recommended rules and the
 TS-aware variants of `no-unused-vars` and `no-use-before-define`.
@@ -104,7 +121,7 @@ true
 
 > `optional` **vitest?**: `boolean`
 
-Defined in: [index.ts:58](/packages/eslint-config/src/index.ts#L58)
+Defined in: [index.ts:61](/packages/eslint-config/src/index.ts#L61)
 
 Add Vitest's recommended rules, scoped to `*.test.*` files.
 
