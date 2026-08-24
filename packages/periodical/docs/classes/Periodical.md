@@ -4,7 +4,7 @@
 
 # Class: Periodical
 
-Defined in: [index.ts:51](/packages/periodical/src/index.ts#L51)
+Defined in: [index.ts:50](/packages/periodical/src/index.ts#L50)
 
 Main `Periodical` class.
 
@@ -32,7 +32,7 @@ p.isRunning(); // false
 
 > **new Periodical**(`interval`): `Periodical`
 
-Defined in: [index.ts:70](/packages/periodical/src/index.ts#L70)
+Defined in: [index.ts:69](/packages/periodical/src/index.ts#L69)
 
 #### Parameters
 
@@ -52,7 +52,7 @@ how often you'd like to run your callback, in milliseconds.
 
 > **fn**: [`Callback`](../type-aliases/Callback.md)
 
-Defined in: [index.ts:60](/packages/periodical/src/index.ts#L60)
+Defined in: [index.ts:59](/packages/periodical/src/index.ts#L59)
 
 your callback function, optionally bound to the context you provide when calling `.start()`.
 
@@ -62,7 +62,7 @@ your callback function, optionally bound to the context you provide when calling
 
 > **interval**: `number`
 
-Defined in: [index.ts:55](/packages/periodical/src/index.ts#L55)
+Defined in: [index.ts:54](/packages/periodical/src/index.ts#L54)
 
 the interval in milliseconds.
 
@@ -72,7 +72,7 @@ the interval in milliseconds.
 
 > **timeoutId**: `Timeout` \| `undefined`
 
-Defined in: [index.ts:65](/packages/periodical/src/index.ts#L65)
+Defined in: [index.ts:64](/packages/periodical/src/index.ts#L64)
 
 the id for the last `setTimeout()` call.
 
@@ -82,7 +82,7 @@ the id for the last `setTimeout()` call.
 
 > **exec**(): `void`
 
-Defined in: [index.ts:127](/packages/periodical/src/index.ts#L127)
+Defined in: [index.ts:126](/packages/periodical/src/index.ts#L126)
 
 **`Internal`**
 
@@ -98,7 +98,7 @@ Executes your callback and enqueues the next run / execution
 
 > **isRunning**(): `boolean`
 
-Defined in: [index.ts:119](/packages/periodical/src/index.ts#L119)
+Defined in: [index.ts:118](/packages/periodical/src/index.ts#L118)
 
 Reports whether or not your periodical is running
 
@@ -112,7 +112,7 @@ Reports whether or not your periodical is running
 
 > **msUntilNextRun**(`now?`): `number`
 
-Defined in: [index.ts:140](/packages/periodical/src/index.ts#L140)
+Defined in: [index.ts:139](/packages/periodical/src/index.ts#L139)
 
 **`Internal`**
 
@@ -134,7 +134,7 @@ Calculates the number of milliseconds until next run / execution
 
 > **start**(`fn`, `ctx?`): `void`
 
-Defined in: [index.ts:97](/packages/periodical/src/index.ts#L97)
+Defined in: [index.ts:96](/packages/periodical/src/index.ts#L96)
 
 Starts your periodical running
 
@@ -178,7 +178,7 @@ p.isRunning(); // 'true'
 
 > **stop**(): `void`
 
-Defined in: [index.ts:111](/packages/periodical/src/index.ts#L111)
+Defined in: [index.ts:110](/packages/periodical/src/index.ts#L110)
 
 Stops your periodical
 

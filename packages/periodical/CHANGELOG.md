@@ -1,6 +1,11 @@
 # `@bust/periodical` Changelog
 <!-- next-version-start -->
 <!-- next-version-end -->
+## v2.0.2
+
+* lint with @bust/eslint-config
+
+
 ## v2.0.1
 
 * split unit and end-to-end test tasks

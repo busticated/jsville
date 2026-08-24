@@ -74,7 +74,7 @@ Every block this package contributes is named `bust/*`, so `npx eslint --inspect
 
 ## API
 <!-- api-docs-start -->
-see [here](https://github.com/busticated/jsville/tree/%40bust%2Feslint-config%400.0.0/packages/eslint-config/docs)
+see [here](https://github.com/busticated/jsville/tree/%40bust%2Feslint-config%402.0.0/packages/eslint-config/docs)
 <!-- api-docs-end -->
 
 _NOTE: When in doubt, check usage in [tests](./src/index.test.ts)_

@@ -1,6 +1,11 @@
 # `@bust/config` Changelog
 <!-- next-version-start -->
 <!-- next-version-end -->
+## v0.2.1
+
+* lint with @bust/eslint-config
+
+
 ## v0.2.0
 
 * derive get() key and value types from the schema
