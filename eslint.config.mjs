@@ -5,17 +5,13 @@ import bust from '@bust/eslint-config';
 export default [
 	includeIgnoreFile(path.join(import.meta.dirname, '.gitignore')),
 
-	...bust({ ignores: ['**/docs/**'] }),
+	...bust({ nodeTest: true, ignores: ['**/docs/**'] }),
 
 	{
 		name: 'jsville/tests',
 		files: ['**/*.{spec,test,e2e,integration}.{js,mjs,ts,mts}'],
 		rules: {
 			'func-names': 'off',
-			// `node:test`'s `describe()` and `it()` return promises nobody is
-			// meant to await - the rule is right about the type and wrong about
-			// this runner
-			'@typescript-eslint/no-floating-promises': 'off',
 		},
 	},
 
