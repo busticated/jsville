@@ -3,7 +3,7 @@
 // values to exercise runtime validation, which fights static typing by design.
 import { describe, it, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { Config, ConfigEnvVars } from './config.js';
+import { Config, type ConfigEnvVars } from './config.js';
 
 
 describe('@bust/config', () => {
@@ -50,7 +50,7 @@ describe('@bust/config', () => {
 			assert.throws(
 				() => config.get('NOPE!'),
 				{
-					'message': '\'NOPE!\' is not available - please ensure you\'ve set it'
+					'message': '\'NOPE!\' is not available - please ensure you\'ve set it',
 				},
 			);
 		});
@@ -191,8 +191,8 @@ describe('@bust/config', () => {
 			assert.throws(
 				() => config.hydrate(schema),
 				{
-					message: '\'test\' uses an unrecognized format: NOPE!'
-				}
+					message: '\'test\' uses an unrecognized format: NOPE!',
+				},
 			);
 		});
 
@@ -205,7 +205,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\' is missing - please set it!',
-				}
+				},
 			);
 		});
 
@@ -219,7 +219,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be one of a|b|c',
-				}
+				},
 			);
 
 			schema.test.default = 'a';
@@ -228,7 +228,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema, env),
 				{
 					message: '\'test\': must be one of a|b|c',
-				}
+				},
 			);
 
 			schema.test.default = 'a';
@@ -249,7 +249,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be an integer',
-				}
+				},
 			);
 
 			schema.test.default = 1.1;
@@ -258,7 +258,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be an integer',
-				}
+				},
 			);
 
 			schema.test.default = 1;
@@ -267,7 +267,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema, env),
 				{
 					message: '\'test\': must be an integer',
-				}
+				},
 			);
 
 			schema.test.default = 1;
@@ -288,7 +288,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be a positive integer',
-				}
+				},
 			);
 
 			schema.test.default = -1;
@@ -297,7 +297,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be a positive integer',
-				}
+				},
 			);
 
 			schema.test.default = 1.0;
@@ -306,7 +306,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema, env),
 				{
 					message: '\'test\': must be a positive integer',
-				}
+				},
 			);
 
 			schema.test.default = 1.0;
@@ -327,7 +327,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be a number',
-				}
+				},
 			);
 
 			schema.test.default = -1.5;
@@ -336,7 +336,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema, env),
 				{
 					message: '\'test\': must be a number',
-				}
+				},
 			);
 
 			schema.test.default = -1.5;
@@ -357,7 +357,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be a valid url',
-				}
+				},
 			);
 
 			schema.test.default = 'http://example.com';
@@ -366,7 +366,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema, env),
 				{
 					message: '\'test\': must be a valid url',
-				}
+				},
 			);
 
 			schema.test.default = 'http://example.com';
@@ -387,7 +387,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be a boolean',
-				}
+				},
 			);
 
 			schema.test.default = false;
@@ -407,7 +407,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be a string',
-				}
+				},
 			);
 
 			schema.test.default = 'ok';
@@ -427,7 +427,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be a regular expression (RegExp)',
-				}
+				},
 			);
 
 			schema.test.default = /ok/;
@@ -447,7 +447,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be an object',
-				}
+				},
 			);
 
 			schema.test.default = {};
@@ -456,7 +456,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema, env),
 				{
 					message: '\'test\': must be an object',
-				}
+				},
 			);
 
 			schema.test.default = {};
@@ -476,7 +476,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be an array',
-				}
+				},
 			);
 
 			schema.test.default = 'one,two,three';
@@ -485,7 +485,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema),
 				{
 					message: '\'test\': must be an array',
-				}
+				},
 			);
 
 			const env = { TEST: false };
@@ -495,7 +495,7 @@ describe('@bust/config', () => {
 				() => config.hydrate(schema, env),
 				{
 					message: '\'test\': must be an array',
-				}
+				},
 			);
 
 			schema.test.default = [];
