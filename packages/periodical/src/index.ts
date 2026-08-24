@@ -27,7 +27,6 @@ export type Callback = () => void;
 export const noop = () => {};
 
 
-
 /**
  * Main `Periodical` class.
  *

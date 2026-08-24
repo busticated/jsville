@@ -24,7 +24,7 @@ describe('@bust/periodically', () => {
 			value: 0,
 			run() {
 				this.value += 1;
-			}
+			},
 		};
 
 		ctx.mock.timers.enable({ apis: ['setTimeout'] });
