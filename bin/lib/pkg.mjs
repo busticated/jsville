@@ -33,6 +33,7 @@ export class Pkg {
 		this.readmePath = path.join(this.path, 'README.md');
 		this.jsonPath = path.join(this.path, 'package.json');
 		this.json = null;
+		this.publishedTag = undefined;
 		this.git = new Git();
 	}
 
@@ -54,17 +55,36 @@ export class Pkg {
 		return fs.readJson(this.jsonPath);
 	}
 
-	async getUnpublishedChanges() {
-		const { name, basename } = this;
+	// the tag the last published release is on, or `null` when this repo has
+	// none - a package that has never been published, or one whose earlier
+	// versions were published from somewhere else
+	async getPublishedTag() {
+		if (this.publishedTag !== undefined) {
+			return this.publishedTag;
+		}
+
 		let version;
 
 		try {
-			({ stdout: version } = await execa('npm', ['view', name, 'version']));
+			({ stdout: version } = await execa('npm', ['view', this.name, 'version']));
 		} catch {
-			version = '0.0.0';
+			this.publishedTag = null;
+			return this.publishedTag;
 		}
 
-		const range = `${name}@${version}..HEAD`;
+		const tag = `${this.name}@${version}`;
+
+		this.publishedTag = await this.git.hasTag(tag) ? tag : null;
+
+		return this.publishedTag;
+	}
+
+	async getUnpublishedChanges() {
+		const { basename } = this;
+		const tag = await this.getPublishedTag();
+		// without a published release to diff against, every commit touching
+		// this package is unpublished
+		const range = tag ? `${tag}..HEAD` : 'HEAD';
 		const query = `--grep=\\[${basename}\\]`;
 		const fmt = '--pretty=format:%B';
 		const prefix = `[${basename}]`;
