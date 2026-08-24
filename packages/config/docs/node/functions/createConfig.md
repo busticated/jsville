@@ -4,24 +4,30 @@
 
 # Function: createConfig()
 
-> **createConfig**(`schema`): [`Config`](../../config/classes/Config.md)
+> **createConfig**\<`S`\>(`schema`): [`Config`](../../config/classes/Config.md)\<`S`\>
 
-Defined in: [node.ts:36](/packages/config/src/node.ts#L36)
+Defined in: [node.ts:39](/packages/config/src/node.ts#L39)
 
 Builds a [Config](../../config/classes/Config.md) for use in Node.js: a local `.env` file (if
 present in the current working directory) is loaded into `process.env`
 before `schema` is hydrated, so local development values can live in a
 git-ignored `.env` file instead of real environment variables.
 
+## Type Parameters
+
+### S
+
+`S` *extends* [`SettingsSchemaTree`](../interfaces/SettingsSchemaTree.md)
+
 ## Parameters
 
 ### schema
 
-[`SettingsSchemaTree`](../interfaces/SettingsSchemaTree.md)
+`S`
 
 ## Returns
 
-[`Config`](../../config/classes/Config.md)
+[`Config`](../../config/classes/Config.md)\<`S`\>
 
 ## Example
 
@@ -41,5 +47,8 @@ export const config = createConfig({
 // elsewhere.ts
 import { config } from './config.ts';
 
-config.get('app.name');
+config.get('app.name'); // string - typed from the schema above
 ```
+
+The schema's shape is captured as `S`, so `config.get()` accepts only the
+keys it declares and returns the type each one holds.

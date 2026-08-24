@@ -95,6 +95,12 @@ import { formatLabel } from './lib/format.js';
 - Keep comments minimal and free of unnecessary commentary — capture the key details as concisely as possible.
 - Todo comments are formatted like `TODO (busticated): <message>`, using the handle of the person the work is for. `npm run todo` lists every TODO in the repo, regardless of format.
 
+**Types.** Conditional types are never nested — `no-nested-ternary` matches `ConditionalExpression` only, so lint cannot catch this. Keep each conditional type to a single level and reach for one of these instead:
+
+- A union of independent branches, where each tests the same input and contributes `never` when it doesn't apply, so the union collapses to the one that matches — see `SettingsWidened` in [packages/config/src/types.ts](packages/config/src/types.ts).
+- An interface keyed by the discriminating literal, looked up with `T extends keyof Map ? Map[T] : ...` — see `SettingsFormatValues` in the same file.
+- A named helper type per level, delegating rather than nesting — see `SettingsSpecAt`.
+
 ---
 
 ## Testing
