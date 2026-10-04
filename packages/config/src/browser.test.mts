@@ -17,7 +17,7 @@ describe('@bust/config/browser', () => {
 		delete (globalThis as GlobalWithBustConfig).__BUST_CONFIG__;
 	});
 
-	describe('createConfig', () => {
+	describe('createConfig()', () => {
 		it('Builds a config sourced from its schema defaults when nothing was baked in', () => {
 			const config = createConfig(schema);
 			assert.strictEqual(config.get('app.name'), 'My App');
@@ -25,13 +25,12 @@ describe('@bust/config/browser', () => {
 
 		it('Builds a config sourced from a `getBrowserDefine()`-baked settings blob', () => {
 			(globalThis as GlobalWithBustConfig).__BUST_CONFIG__ = { MY_APP_NAME: 'Baked In By Vite' };
-
 			const config = createConfig(schema);
 			assert.strictEqual(config.get('app.name'), 'Baked In By Vite');
 		});
 	});
 
-	describe('Schema-derived types', () => {
+	describe('createConfig() schema-derived types', () => {
 		it('Types keys and values from the schema, same as the Node entry point', () => {
 			const config = createConfig({
 				app: {
@@ -41,7 +40,6 @@ describe('@bust/config/browser', () => {
 			});
 			const name: string = config.get('app.name');
 			const mode: 'light' | 'dark' = config.get('app.mode');
-
 			// @ts-expect-error - 'app.nmae' is a typo, not a declared key
 			assert.throws(() => config.get('app.nmae'));
 			assert.strictEqual(name, 'My App');
@@ -49,14 +47,13 @@ describe('@bust/config/browser', () => {
 		});
 	});
 
-	describe('getBrowserEnv', () => {
+	describe('getBrowserEnv()', () => {
 		it('Falls back to an empty object when nothing was baked in', () => {
 			assert.deepEqual(getBrowserEnv(), {});
 		});
 
 		it('Returns the settings blob a bundler baked in via `define`', () => {
 			(globalThis as GlobalWithBustConfig).__BUST_CONFIG__ = { MY_APP_NAME: 'Baked In By Vite' };
-
 			assert.deepEqual(getBrowserEnv(), { MY_APP_NAME: 'Baked In By Vite' });
 		});
 	});

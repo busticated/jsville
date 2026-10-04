@@ -4,7 +4,7 @@
 
 # Interface: ConfigEnvVars
 
-Defined in: [types.ts:241](/packages/config/src/types.ts#L241)
+Defined in: [types.ts:242](/packages/config/src/types.ts#L242)
 
 A map of environment variable names to values. Values are typically raw
 strings (as they'd come from `process.env`), but pre-coerced values are

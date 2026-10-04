@@ -62,4 +62,3 @@ function writeDocs(readme, docs){
 	const fragment = `${PKGLIST_MARKER_START}\n${docs}\n${PKGLIST_MARKER_END}`;
 	return readme.replace(ptn, fragment);
 }
-

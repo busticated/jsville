@@ -148,4 +148,3 @@ export class Periodical {
 		return now.getTime() - original.getTime();
 	}
 }
-

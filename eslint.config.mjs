@@ -5,7 +5,7 @@ import bust from '@bust/eslint-config';
 export default [
 	includeIgnoreFile(path.join(import.meta.dirname, '.gitignore')),
 
-	...bust({ nodeTest: true, ignores: ['**/docs/**'] }),
+	...bust({ nodeTest: true, strict: true, ignores: ['**/docs/**'] }),
 
 	{
 		name: 'jsville/tests',

@@ -22,7 +22,7 @@ describe('@bust/config/node', () => {
 		});
 	});
 
-	describe('Schema-derived types', () => {
+	describe('createConfig() schema-derived types', () => {
 		// an inline schema keeps its literal types - a `const` type parameter
 		// only preserves them for the expression at the call site, so a schema
 		// hoisted into its own variable needs `as const` to type its enums
@@ -50,7 +50,6 @@ describe('@bust/config/node', () => {
 			const owners: string[] = typed.get('app.owners');
 			const pattern: RegExp = typed.get('app.pattern');
 			const limits: Record<string, unknown> = typed.get('app.limits');
-
 			assert.strictEqual(name, 'My App');
 			assert.strictEqual(env, 'development');
 			assert.strictEqual(url, 'http://example.com');
@@ -72,7 +71,6 @@ describe('@bust/config/node', () => {
 		it('Falls back to loose keys and values when the schema shape is unknown', () => {
 			const loose: Config = new Config({ schema, env: {} });
 			const value: SettingsValue = loose.get('app.name');
-
 			assert.strictEqual(value, 'My App');
 		});
 	});
@@ -86,10 +84,9 @@ describe('@bust/config/node', () => {
 		});
 	});
 
-	describe('.env file loading', () => {
+	describe('createConfig() with a .env file', () => {
 		let cwd: string;
 		let dir: string;
-
 		before(() => {
 			cwd = process.cwd();
 			// TODO (busticated): retarget to local `./tmp` directory

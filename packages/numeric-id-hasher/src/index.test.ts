@@ -18,11 +18,8 @@ describe('@bust/numeric-id-hasher', () => {
 
 	it('removes padding from zero-padded ids', () => {
 		const hash = base52.encode('0000001');
-
 		assert.strictEqual(hash, '3');
-
 		const id = base52.decode(hash);
-
 		assert.strictEqual(id, '1');
 	});
 
@@ -52,4 +49,3 @@ describe('@bust/numeric-id-hasher', () => {
 		];
 	}
 });
-

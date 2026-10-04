@@ -10,6 +10,9 @@ import tseslint from 'typescript-eslint';
 /** Files Node's test runner drives - it owns the e2e and integration suites too. */
 const NODE_TEST_FILES = ['**/*.{spec,test,e2e,integration}.{js,jsx,ts,tsx,mjs,mts}'];
 
+/** Files Vitest drives. */
+const VITEST_FILES = ['**/*.test.{js,jsx,ts,tsx,mjs,mts}'];
+
 /** Build output and scratch directories every project here ignores. */
 export const DEFAULT_IGNORES = ['**/dist/', '**/coverage/', '**/tmp/'];
 
@@ -26,6 +29,73 @@ const USE_BEFORE_DEFINE = {
 	classes: false,
 	variables: false,
 };
+
+/** `no-use-before-define` under `strict`: variables and types sit above their users too. */
+const STRICT_USE_BEFORE_DEFINE = {
+	...USE_BEFORE_DEFINE,
+	variables: true,
+};
+
+/** Module-level constants holding a literal - a string, number, boolean, regex or plain template. */
+const CONSTANT_NAMES = ['Program >', 'Program > ExportNamedDeclaration >'].map((parent) => ({
+	selector: `${parent} VariableDeclaration[kind="const"] > VariableDeclarator[id.name!=/^[A-Z][A-Z0-9_]*$/]:matches([init.type="Literal"], [init.type="TemplateLiteral"][init.expressions.length=0], [init.type="UnaryExpression"][init.argument.type="Literal"])`,
+	message: 'Module-level primitive constants are SCREAMING_SNAKE_CASE.',
+}));
+
+const VARIABLE = ':matches(VariableDeclaration, ExportNamedDeclaration[declaration.type="VariableDeclaration"])';
+const FUNCTION_OR_CLASS = ':matches(FunctionDeclaration, ClassDeclaration, ExportNamedDeclaration[declaration.type=/^(FunctionDeclaration|ClassDeclaration)$/], ExportDefaultDeclaration)';
+const TEST_CALL = ':matches(ExpressionStatement[expression.callee.name=/^(describe|it|test|beforeEach|afterEach|beforeAll|afterAll)$/], ExpressionStatement[expression.callee.object.name=/^(describe|it|test)$/][expression.callee.property.name=/^(describe|only|each|beforeEach|afterEach|beforeAll|afterAll)$/])';
+
+const ORDERING = [
+	{ selector: `${FUNCTION_OR_CLASS} ~ ${VARIABLE}`, message: 'Declare variables above functions and classes in the same scope.' },
+	{
+		selector: 'CallExpression[callee.property.name="forEach"] > :function :matches(AssignmentExpression, UpdateExpression, CallExpression[callee.property.name=/^(push|unshift|splice|pop|shift|set|add|delete|clear)$/])',
+		message: 'Use `for...of` rather than `.forEach()` to assign or change a collection.',
+	},
+];
+
+const TEST_ORDERING = [
+	{ selector: `${TEST_CALL} ~ ${VARIABLE}`, message: 'Declare variables above describe(), it() and hooks in the same scope.' },
+];
+
+const DESCRIBE_TITLES = [
+	{
+		selector: 'Program > ExpressionStatement > CallExpression[callee.name="describe"][arguments.0.value!=/^([A-Z][A-Za-z0-9]*( [A-Z][A-Za-z0-9]*)*|@[a-z0-9-]+\\/[a-z0-9-]+(\\/[a-z0-9-]+)*)$/]',
+		message: 'A top-level describe() names the module in Title Case, or the package as `@scope/name`.',
+	},
+	{
+		selector: 'CallExpression[callee.name="describe"] CallExpression[callee.name="describe"][arguments.0.value!=/^([A-Za-z_$][A-Za-z0-9_$.]*\\(\\)|<[A-Z][A-Za-z0-9.]* \\/>|[A-Z][A-Z0-9_]*)( .+)?$/]',
+		message: 'A nested describe() names a function, component or constant - `fn()`, `<Component />` or `CONSTANT` - with an optional suffix.',
+	},
+];
+
+// module level is left alone: a one-line `vi.mock()` above `describe()` keeps its blank line
+const SINGLE_LINE_IN_BLOCK = { selector: 'BlockStatement > *', lineMode: 'singleline' };
+const LOGGER = 'ExpressionStatement[expression.callee.property.name=/^(debug|info|warn|error|print|printError)$/][expression.callee.object.name!=/^(console|controller)$/]';
+// the last statement in a block falls back to the rules every other statement follows
+const LOGGER_CALL = { selector: `${LOGGER}:not(:last-child)` };
+const PROCESS_EXIT = { selector: 'ExpressionStatement[expression.callee.object.name="process"][expression.callee.property.name="exit"]' };
+
+const STATEMENT_PADDING = [
+	{ blankLine: 'never', prev: SINGLE_LINE_IN_BLOCK, next: '*' },
+	{ blankLine: 'always', prev: '*', next: ['if', 'for', 'while', 'do', 'switch', 'try', 'function'] },
+	{ blankLine: 'always', prev: '*', next: { selector: TEST_CALL } },
+	{ blankLine: 'always', prev: '*', next: { selector: 'ExpressionStatement[expression.callee.name=/^use[A-Z]/]', lineMode: 'multiline' } },
+	{ blankLine: 'always', prev: '*', next: { selector: 'ExpressionStatement[expression.callee.property.name="forEach"]', lineMode: 'multiline' } },
+	{ blankLine: 'always', prev: { selector: 'BlockStatement > *', lineMode: 'multiline' }, next: 'return' },
+];
+
+const LOGGER_PADDING = [
+	{ blankLine: 'always', prev: '*', next: LOGGER_CALL },
+	{ blankLine: 'always', prev: LOGGER_CALL, next: '*' },
+	{ blankLine: 'never', prev: LOGGER_CALL, next: { selector: LOGGER } },
+	{ blankLine: 'never', prev: { ...LOGGER_CALL, lineMode: 'singleline' }, next: ['return', 'throw', PROCESS_EXIT] },
+];
+
+const IMPORT_PADDING = [
+	{ blankLine: 'always', prev: 'import', next: '*' },
+	{ blankLine: 'any', prev: 'import', next: 'import' },
+];
 
 /** Options accepted by {@link bust}. */
 export interface BustConfigOptions {
@@ -67,6 +137,14 @@ export interface BustConfigOptions {
 	 */
 	nodeTest?: boolean;
 	/**
+	 * Enforce the stricter conventions: blank lines between statements,
+	 * declaration order, constant naming, and - with a test runner on - test
+	 * suite structure. See the README for the full list.
+	 *
+	 * @defaultValue false
+	 */
+	strict?: boolean;
+	/**
 	 * Where the type-aware project service looks for `tsconfig.json`.
 	 *
 	 * @defaultValue `process.cwd()`
@@ -91,6 +169,7 @@ function resolveOptions(options: BustConfigOptions): Required<Omit<BustConfigOpt
 		typeAware: options.typeAware ?? true,
 		react: options.react ?? false,
 		vitest: options.vitest ?? false,
+		strict: options.strict ?? false,
 		tsconfigRootDir: options.tsconfigRootDir ?? process.cwd(),
 		allowDefaultProject: options.allowDefaultProject,
 		ignores: options.ignores ?? [],
@@ -134,6 +213,7 @@ export function bust(options: BustConfigOptions = {}): Linter.Config[] {
 		react,
 		nodeTest,
 		vitest: withVitest,
+		strict,
 		tsconfigRootDir,
 		allowDefaultProject,
 		ignores,
@@ -305,9 +385,58 @@ export function bust(options: BustConfigOptions = {}): Linter.Config[] {
 	if (withVitest) {
 		configs.push({
 			name: 'bust/vitest',
-			files: ['**/*.test.{js,jsx,ts,tsx,mjs,mts}'],
+			files: VITEST_FILES,
 			plugins: { vitest },
 			rules: vitest.configs.recommended.rules as Linter.RulesRecord,
+		});
+	}
+
+	if (strict) {
+		configs.push(...strictConfigs(typescript, withVitest, nodeTest));
+	}
+
+	return configs;
+}
+
+/** The blocks {@link BustConfigOptions.strict} adds. */
+function strictConfigs(typescript: boolean, withVitest: boolean, nodeTest: boolean): Linter.Config[] {
+	const configs: Linter.Config[] = [{
+		name: 'bust/strict',
+		plugins: { '@stylistic': stylistic },
+		rules: {
+			'@stylistic/no-multiple-empty-lines': ['error', { max: 2, maxBOF: 0, maxEOF: 0 }],
+			'@stylistic/padded-blocks': ['error', 'never'],
+			'@stylistic/padding-line-between-statements': ['error', ...STATEMENT_PADDING, ...LOGGER_PADDING, ...IMPORT_PADDING],
+			...(typescript
+				? { '@typescript-eslint/no-use-before-define': ['error', { ...STRICT_USE_BEFORE_DEFINE, typedefs: true, ignoreTypeReferences: false }] }
+				: { 'no-use-before-define': ['error', STRICT_USE_BEFORE_DEFINE] }),
+			'no-restricted-syntax': ['error', ...CONSTANT_NAMES, ...ORDERING],
+		},
+	}];
+	const testFiles = [...(withVitest ? VITEST_FILES : []), ...(nodeTest ? NODE_TEST_FILES : [])];
+
+	if (testFiles.length) {
+		configs.push({
+			name: 'bust/strict-tests',
+			files: testFiles,
+			rules: {
+				// both rules repeat the base entries: a later block replaces the whole rule
+				// a logged line in a test is usually the act under test, so it is not padded
+				'@stylistic/padding-line-between-statements': ['error', ...STATEMENT_PADDING, ...IMPORT_PADDING],
+				'no-restricted-syntax': ['error', ...CONSTANT_NAMES, ...ORDERING, ...TEST_ORDERING, ...DESCRIBE_TITLES],
+			},
+		});
+	}
+
+	if (withVitest) {
+		configs.push({
+			name: 'bust/strict-vitest',
+			files: VITEST_FILES,
+			plugins: { vitest },
+			rules: {
+				'vitest/require-top-level-describe': ['error', { maxNumberOfTopLevelDescribes: 1 }],
+				'vitest/consistent-test-it': ['error', { fn: 'it', withinDescribe: 'it' }],
+			},
 		});
 	}
 

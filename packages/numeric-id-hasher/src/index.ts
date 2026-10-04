@@ -54,7 +54,6 @@ export const encode = (id: string) => {
 export const decode = (hash: string) => {
 	let result = BigInt(0);
 	let charIndex, i;
-
 	hash = hash.split('').reverse().join('');
 
 	for (i = 0; i < hash.length; i++){
@@ -64,4 +63,3 @@ export const decode = (hash: string) => {
 
 	return result.toString();
 };
-

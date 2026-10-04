@@ -16,7 +16,6 @@ export const loadTemplates = async () => {
 		const filename = path.join(TEMPLATES_DIR, f.name);
 		const tmplData = await fs.readFile(filename, 'utf8');
 		const key = formatKey(f);
-
 		templates[key] = _.template(tmplData, {
 			imports: {
 				camelCase: _.camelCase,
@@ -41,4 +40,3 @@ function formatKey(file){
 	const ext = parts.pop();
 	return _.camelCase(parts.join('-')) + ext;
 }
-

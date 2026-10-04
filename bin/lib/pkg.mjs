@@ -73,9 +73,7 @@ export class Pkg {
 		}
 
 		const tag = `${this.name}@${version}`;
-
 		this.publishedTag = await this.git.hasTag(tag) ? tag : null;
-
 		return this.publishedTag;
 	}
 
@@ -88,9 +86,7 @@ export class Pkg {
 		const query = `--grep=\\[${basename}\\]`;
 		const fmt = '--pretty=format:%B';
 		const prefix = `[${basename}]`;
-
 		const { stdout: history } = await this.git.log([range, query, fmt]);
-
 		return history
 			.split('\n')
 			.filter((x) => !!x)
@@ -123,7 +119,6 @@ export class Pkg {
 		}
 
 		lines.push('\n');
-
 		return this.writeChangelog(
 			content.replace(ptn, lines.join('')),
 		);

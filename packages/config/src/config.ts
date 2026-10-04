@@ -21,6 +21,65 @@ import type {
  */
 export const CONFIG_GLOBAL_NAME = '__BUST_CONFIG__';
 
+const OBJECT_TYPE_PATTERN = /\[.* |]/g;
+
+const validators: Record<string, Validator> = {
+	enum: function(key, spec) {
+		const allowed = spec.format as readonly string[];
+
+		if (!allowed.includes(spec.value as string)) {
+			throw new Error(`'${key}': must be one of ${allowed.join('|')}`);
+		}
+	},
+	int: function(key, spec) {
+		if (!Number.isInteger(spec.value)) {
+			throw new Error(`'${key}': must be an integer`);
+		}
+	},
+	nat: function(key, spec) {
+		if (!Number.isInteger(spec.value) || (spec.value as number) < 0) {
+			throw new Error(`'${key}': must be a positive integer`);
+		}
+	},
+	url: function(key, spec) {
+		try {
+			new URL(spec.value as string);
+		} catch {
+			throw new Error(`'${key}': must be a valid url`);
+		}
+	},
+	boolean: function(key, spec) {
+		if (typeof spec.value !== 'boolean') {
+			throw new Error(`'${key}': must be a boolean`);
+		}
+	},
+	string: function(key, spec) {
+		if (typeof spec.value !== 'string') {
+			throw new Error(`'${key}': must be a string`);
+		}
+	},
+	number: function(key, spec) {
+		if (typeof spec.value !== 'number' || isNaN(spec.value)) {
+			throw new Error(`'${key}': must be a number`);
+		}
+	},
+	regexp: function(key, spec) {
+		if (spec?.value?.constructor?.name !== 'RegExp') {
+			throw new Error(`'${key}': must be a regular expression (RegExp)`);
+		}
+	},
+	object: function(key, spec) {
+		if (!isObject(spec.value)) {
+			throw new Error(`'${key}': must be an object`);
+		}
+	},
+	array: function(key, spec) {
+		if (!Array.isArray(spec.value)) {
+			throw new Error(`'${key}': must be an array`);
+		}
+	},
+};
+
 /**
  * Schema-driven configuration store. Given a {@link SettingsSchemaTree} and a
  * map of environment variables, hydrates each leaf setting's value from the
@@ -145,7 +204,6 @@ export class Config<S extends SettingsSchemaTree = SettingsSchemaTree> {
 		}
 
 		traverse(data, '');
-
 		return settings;
 	}
 }
@@ -206,63 +264,6 @@ function format(x: SettingsValue | undefined, key: SettingsKey, spec: SettingsSp
 	}
 }
 
-const validators: Record<string, Validator> = {
-	enum: function(key, spec) {
-		const allowed = spec.format as readonly string[];
-
-		if (!allowed.includes(spec.value as string)) {
-			throw new Error(`'${key}': must be one of ${allowed.join('|')}`);
-		}
-	},
-	int: function(key, spec) {
-		if (!Number.isInteger(spec.value)) {
-			throw new Error(`'${key}': must be an integer`);
-		}
-	},
-	nat: function(key, spec) {
-		if (!Number.isInteger(spec.value) || (spec.value as number) < 0) {
-			throw new Error(`'${key}': must be a positive integer`);
-		}
-	},
-	url: function(key, spec) {
-		try {
-			new URL(spec.value as string);
-		} catch {
-			throw new Error(`'${key}': must be a valid url`);
-		}
-	},
-	boolean: function(key, spec) {
-		if (typeof spec.value !== 'boolean') {
-			throw new Error(`'${key}': must be a boolean`);
-		}
-	},
-	string: function(key, spec) {
-		if (typeof spec.value !== 'string') {
-			throw new Error(`'${key}': must be a string`);
-		}
-	},
-	number: function(key, spec) {
-		if (typeof spec.value !== 'number' || isNaN(spec.value)) {
-			throw new Error(`'${key}': must be a number`);
-		}
-	},
-	regexp: function(key, spec) {
-		if (spec?.value?.constructor?.name !== 'RegExp') {
-			throw new Error(`'${key}': must be a regular expression (RegExp)`);
-		}
-	},
-	object: function(key, spec) {
-		if (!isObject(spec.value)) {
-			throw new Error(`'${key}': must be an object`);
-		}
-	},
-	array: function(key, spec) {
-		if (!Array.isArray(spec.value)) {
-			throw new Error(`'${key}': must be an array`);
-		}
-	},
-};
-
 function validate(key: SettingsKey, spec: SettingsSpec): void {
 	const validator = Array.isArray(spec.format)
 		? validators.enum
@@ -279,9 +280,7 @@ function isObject(x: unknown): x is Record<string, unknown> {
 	return !!x && typeof x === 'object' && !Array.isArray(x);
 }
 
-const objTypePtn = /\[.* |]/g;
-
 function getDefaultFormatter(x: SettingsValue): SettingsFormatName {
 	const type = Object.prototype.toString.call(x);
-	return type.replace(objTypePtn, '').toLowerCase() as SettingsFormatName;
+	return type.replace(OBJECT_TYPE_PATTERN, '').toLowerCase() as SettingsFormatName;
 }

@@ -6,7 +6,7 @@ import { bust, DEFAULT_IGNORES } from './index.js';
 
 
 describe('@bust/eslint-config', () => {
-	describe('Default options', () => {
+	describe('bust() default options', () => {
 		it('Targets TypeScript, with type-aware rules and no framework blocks', () => {
 			const names = namesOf(bust());
 			assert.deepEqual(names, [
@@ -34,7 +34,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('Ignores', () => {
+	describe('bust() ignores', () => {
 		it('Ignores build output by default', () => {
 			const block = blockNamed(bust(), 'bust/ignores');
 			assert.deepEqual(block.ignores, DEFAULT_IGNORES);
@@ -46,7 +46,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('JavaScript-only projects', () => {
+	describe('bust() for JavaScript-only projects', () => {
 		it('Drops the TypeScript blocks and keeps the core rules', () => {
 			const names = namesOf(bust({ typescript: false }));
 			assert.deepEqual(names, ['bust/ignores', 'bust/base', 'bust/javascript']);
@@ -72,7 +72,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('Type-aware rules', () => {
+	describe('bust() type-aware rules', () => {
 		it('Can be turned off on their own', () => {
 			const names = namesOf(bust({ typeAware: false }));
 			assert.deepEqual(names, ['bust/ignores', 'bust/base', 'bust/typescript']);
@@ -99,7 +99,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('React', () => {
+	describe('bust() React', () => {
 		it('Adds the react, jsx-stylistic, and hooks blocks', () => {
 			const names = namesOf(bust({ react: true }));
 			assert.equal(names.includes('bust/react'), true);
@@ -119,7 +119,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('Node test runner', () => {
+	describe('bust() Node test runner', () => {
 		it('Relaxes the type-aware rule its `describe()` and `it()` trip', () => {
 			const block = blockNamed(bust({ nodeTest: true }), 'bust/node-test');
 			assert.equal(rulesOf(block)['@typescript-eslint/no-floating-promises'], 'off');
@@ -140,7 +140,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('Vitest', () => {
+	describe('bust() Vitest', () => {
 		it('Adds a block scoped to test files', () => {
 			const block = blockNamed(bust({ vitest: true }), 'bust/vitest');
 			assert.deepEqual(block.files, ['**/*.test.{js,jsx,ts,tsx,mjs,mts}']);
@@ -150,6 +150,83 @@ describe('@bust/eslint-config', () => {
 		it('Is absent unless asked for', () => {
 			assert.equal(namesOf(bust()).includes('bust/vitest'), false);
 		});
+	});
+
+	describe('bust() strict', () => {
+		it('Is absent unless asked for', () => {
+			assert.equal(namesOf(bust()).some((name) => name.startsWith('bust/strict')), false);
+		});
+
+		it('Adds no test blocks without a test runner', () => {
+			const names = namesOf(bust({ strict: true }));
+			assert.equal(names.at(-1), 'bust/strict');
+			assert.equal(names.includes('bust/strict-tests'), false);
+		});
+
+		it('Puts variables and types above their users in TypeScript', () => {
+			const rules = rulesOf(blockNamed(bust({ strict: true }), 'bust/strict'));
+			assert.deepEqual(rules['@typescript-eslint/no-use-before-define'], ['error', {
+				functions: false,
+				classes: false,
+				variables: true,
+				typedefs: true,
+				ignoreTypeReferences: false,
+			}]);
+		});
+
+		it('Uses the core `no-use-before-define` without TypeScript', () => {
+			const rules = rulesOf(blockNamed(bust({ typescript: false, strict: true }), 'bust/strict'));
+			assert.deepEqual(rules['no-use-before-define'], ['error', {
+				functions: false,
+				classes: false,
+				variables: true,
+			}]);
+		});
+
+		it('Scopes the test rules to Vitest files and adds the Vitest-only rules', () => {
+			const configs = bust({ strict: true, vitest: true });
+			assert.deepEqual(blockNamed(configs, 'bust/strict-tests').files, ['**/*.test.{js,jsx,ts,tsx,mjs,mts}']);
+			assert.ok(rulesOf(blockNamed(configs, 'bust/strict-vitest'))['vitest/require-top-level-describe']);
+		});
+
+		it('Scopes the test rules to the Node test runner suites without the Vitest-only rules', () => {
+			const names = namesOf(bust({ strict: true, nodeTest: true }));
+			const block = blockNamed(bust({ strict: true, nodeTest: true }), 'bust/strict-tests');
+			assert.deepEqual(block.files, ['**/*.{spec,test,e2e,integration}.{js,jsx,ts,tsx,mjs,mts}']);
+			assert.equal(names.includes('bust/strict-vitest'), false);
+		});
+
+		it('Reports a blank line after a single-line statement', () => {
+			const ruleIds = verify('export function f() {\n\tconst a = 1;\n\n\treturn a;\n}\n', 'example.js');
+			assert.deepEqual(ruleIds, ['@stylistic/padding-line-between-statements']);
+		});
+
+		it('Reports a primitive constant that is not SCREAMING_SNAKE_CASE', () => {
+			const ruleIds = verify('export const maxTries = 3;\nexport const MAX_LENGTH = 10;\n', 'example.js');
+			assert.deepEqual(ruleIds, ['no-restricted-syntax']);
+		});
+
+		it('Reports a describe() title that names neither the module nor a function', () => {
+			const source = [
+				"describe('@bust/example', () => {",
+				"\tdescribe('example()', () => {});",
+				'',
+				"\tdescribe('guards', () => {});",
+				'});',
+				'',
+			].join('\n');
+			const messages = verifyMessages(source, 'example.test.js');
+			assert.deepEqual(messages.map((message) => message.line), [4]);
+		});
+
+		function verify(source: string, filename: string): string[] {
+			return verifyMessages(source, filename).map((message) => String(message.ruleId)).sort();
+		}
+
+		function verifyMessages(source: string, filename: string): LinterTypes.LintMessage[] {
+			const configs = bust({ typescript: false, strict: true, nodeTest: true });
+			return new Linter().verify(source, [...configs, { languageOptions: { globals: { describe: 'readonly' } } }] as LinterTypes.Config[], filename);
+		}
 	});
 
 	// the plugin configs we compose carry their own names; these assertions are
