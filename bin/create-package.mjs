@@ -43,7 +43,6 @@ try {
 	await git.add(['README.md', 'npm-shrinkwrap.json', pkg.path]);
 	await git.commit(`[${pkg.basename}] create package`);
 	await git.tag(['-a', pkg.tag, '-m', pkg.tag]);
-
 	logTitle('Success!');
 	logTitle(`Your new ${pkg.name} package is located here: ${pkg.path}`);
 } catch (error){
@@ -72,6 +71,7 @@ async function promptForPackageInfo(cli){
 				if (await pkg.exists()){
 					return `Directory "${pkg.path}" already exists! please choose a different name.`;
 				}
+
 				return true;
 			},
 		},
@@ -85,4 +85,3 @@ async function promptForPackageInfo(cli){
 
 	return new Pkg({ name, description });
 }
-

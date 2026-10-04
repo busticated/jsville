@@ -9,7 +9,6 @@ try {
 	const pkg = await Pkg.createFromDisk(args[0].trim());
 	const tag = await pkg.getPublishedTag();
 	const changes = await pkg.getUnpublishedChanges();
-
 	logTitle(`${pkg.name} - Unpublished Changes`);
 	log(tag
 		? `:::: since ${tag}`
@@ -27,4 +26,3 @@ try {
 }
 
 logTitle('All Done!');
-

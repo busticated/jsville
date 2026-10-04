@@ -24,4 +24,3 @@ export const logErrorAndExit = (error, code = 1) => {
 	console.error(error);
 	return process.exit(code);
 };
-
