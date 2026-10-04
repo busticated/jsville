@@ -6,7 +6,7 @@ import { bust, DEFAULT_IGNORES } from './index.js';
 
 
 describe('@bust/eslint-config', () => {
-	describe('Default options', () => {
+	describe('bust() default options', () => {
 		it('Targets TypeScript, with type-aware rules and no framework blocks', () => {
 			const names = namesOf(bust());
 			assert.deepEqual(names, [
@@ -34,7 +34,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('Ignores', () => {
+	describe('bust() ignores', () => {
 		it('Ignores build output by default', () => {
 			const block = blockNamed(bust(), 'bust/ignores');
 			assert.deepEqual(block.ignores, DEFAULT_IGNORES);
@@ -46,7 +46,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('JavaScript-only projects', () => {
+	describe('bust() for JavaScript-only projects', () => {
 		it('Drops the TypeScript blocks and keeps the core rules', () => {
 			const names = namesOf(bust({ typescript: false }));
 			assert.deepEqual(names, ['bust/ignores', 'bust/base', 'bust/javascript']);
@@ -72,7 +72,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('Type-aware rules', () => {
+	describe('bust() type-aware rules', () => {
 		it('Can be turned off on their own', () => {
 			const names = namesOf(bust({ typeAware: false }));
 			assert.deepEqual(names, ['bust/ignores', 'bust/base', 'bust/typescript']);
@@ -99,7 +99,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('React', () => {
+	describe('bust() React', () => {
 		it('Adds the react, jsx-stylistic, and hooks blocks', () => {
 			const names = namesOf(bust({ react: true }));
 			assert.equal(names.includes('bust/react'), true);
@@ -119,7 +119,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('Node test runner', () => {
+	describe('bust() Node test runner', () => {
 		it('Relaxes the type-aware rule its `describe()` and `it()` trip', () => {
 			const block = blockNamed(bust({ nodeTest: true }), 'bust/node-test');
 			assert.equal(rulesOf(block)['@typescript-eslint/no-floating-promises'], 'off');
@@ -140,7 +140,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('Vitest', () => {
+	describe('bust() Vitest', () => {
 		it('Adds a block scoped to test files', () => {
 			const block = blockNamed(bust({ vitest: true }), 'bust/vitest');
 			assert.deepEqual(block.files, ['**/*.test.{js,jsx,ts,tsx,mjs,mts}']);
@@ -152,7 +152,7 @@ describe('@bust/eslint-config', () => {
 		});
 	});
 
-	describe('Strict', () => {
+	describe('bust() strict', () => {
 		it('Is absent unless asked for', () => {
 			assert.equal(namesOf(bust()).some((name) => name.startsWith('bust/strict')), false);
 		});
