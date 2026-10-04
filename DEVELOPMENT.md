@@ -315,6 +315,29 @@ import { formatLabel } from './lib/format.js';
 </p>
 </details>
 
+<details id="develop-formatting">
+<summary>
+	<b>How to format your code</b>
+</summary>
+<p>
+
+The repo lints with `@bust/eslint-config`'s `strict` option, which covers blank lines between statements, declaration order, constant naming, and test suite structure. The full list is in that package's "[Strict conventions](packages/eslint-config/README.md#strict-conventions)" section.
+
+To check your code, and to fix everything but the naming and ordering rules:
+
+```
+npm run lint
+npm run lint:fix
+```
+
+Two conventions are on you, since lint cannot check them:
+
+* code is ordered top-down: the highest-level constructs first, lower-level and utility functions below them
+* `it()` names the behavior concisely - e.g. `'Loads values from a .env file before building the config'`
+
+</p>
+</details>
+
 <details id="develop-todo">
 <summary><b>How to view and add TODO source code comments</b></summary>
 <p>
