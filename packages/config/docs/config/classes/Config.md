@@ -4,7 +4,7 @@
 
 # Class: Config\<S\>
 
-Defined in: [config.ts:54](/packages/config/src/config.ts#L54)
+Defined in: [config.ts:113](/packages/config/src/config.ts#L113)
 
 Schema-driven configuration store. Given a [SettingsSchemaTree](../../node/interfaces/SettingsSchemaTree.md) and a
 map of environment variables, hydrates each leaf setting's value from the
@@ -48,7 +48,7 @@ SettingsValue union.
 
 > **new Config**\<`S`\>(`__namedParameters?`): `Config`\<`S`\>
 
-Defined in: [config.ts:57](/packages/config/src/config.ts#L57)
+Defined in: [config.ts:116](/packages/config/src/config.ts#L116)
 
 #### Parameters
 
@@ -66,7 +66,7 @@ Defined in: [config.ts:57](/packages/config/src/config.ts#L57)
 
 > **settings**: `Settings`
 
-Defined in: [config.ts:55](/packages/config/src/config.ts#L55)
+Defined in: [config.ts:114](/packages/config/src/config.ts#L114)
 
 ## Methods
 
@@ -74,7 +74,7 @@ Defined in: [config.ts:55](/packages/config/src/config.ts#L55)
 
 > **get**\<`K`\>(`key`): `SettingsValueAt`\<`S`, `K`\>
 
-Defined in: [config.ts:66](/packages/config/src/config.ts#L66)
+Defined in: [config.ts:125](/packages/config/src/config.ts#L125)
 
 Looks up a single setting's hydrated value by its dot-delimited key.
 
@@ -104,7 +104,7 @@ if `key` isn't present in the hydrated schema
 
 > **getPublicEnvVars**(): [`ConfigEnvVars`](../../node/interfaces/ConfigEnvVars.md)
 
-Defined in: [config.ts:95](/packages/config/src/config.ts#L95)
+Defined in: [config.ts:154](/packages/config/src/config.ts#L154)
 
 Returns every public setting's value keyed by its *environment variable
 name* rather than its schema path.
@@ -119,7 +119,7 @@ name* rather than its schema path.
 
 > **getPublicSettings**(): `PublicSettings`
 
-Defined in: [config.ts:77](/packages/config/src/config.ts#L77)
+Defined in: [config.ts:136](/packages/config/src/config.ts#L136)
 
 Returns every hydrated setting marked `public: true`, keyed by dot-delimited path.
 
@@ -133,7 +133,7 @@ Returns every hydrated setting marked `public: true`, keyed by dot-delimited pat
 
 > **hydrate**(`data`, `env?`): `Settings`
 
-Defined in: [config.ts:118](/packages/config/src/config.ts#L118)
+Defined in: [config.ts:177](/packages/config/src/config.ts#L177)
 
 Walks a [SettingsSchemaTree](../../node/interfaces/SettingsSchemaTree.md), resolving each leaf's format,
 coercing/validating its value from `env` (or its default), and
