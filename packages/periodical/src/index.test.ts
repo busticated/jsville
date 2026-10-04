@@ -28,11 +28,8 @@ describe('@bust/periodically', () => {
 		};
 
 		ctx.mock.timers.enable({ apis: ['setTimeout'] });
-
 		p.start(myObj.run, myObj);
-
 		ctx.mock.timers.tick(interval);
-
 		assert.equal(myObj.value, 1);
 		assert.notEqual(p.timeoutId, undefined);
 		assert.equal(p.isRunning(), true);
@@ -41,13 +38,9 @@ describe('@bust/periodically', () => {
 	it('starts with function as callback', (ctx) => {
 		const p = new Periodical(interval);
 		const run = ctx.mock.fn();
-
 		ctx.mock.timers.enable({ apis: ['setTimeout'] });
-
 		p.start(run);
-
 		ctx.mock.timers.tick(interval);
-
 		assert.equal(run.mock.callCount(), 1);
 		assert.notEqual(p.timeoutId, undefined);
 		assert.equal(p.isRunning(), true);
@@ -56,12 +49,9 @@ describe('@bust/periodically', () => {
 	it('stops', (ctx) => {
 		const p = new Periodical(interval);
 		const myObj = { run: ctx.mock.fn() };
-
 		ctx.mock.timers.enable({ apis: ['setTimeout'] });
-
 		p.start(myObj.run, myObj);
 		p.stop();
-
 		assert.equal(myObj.run.mock.callCount(), 0);
 		assert.equal(p.timeoutId, undefined);
 		assert.equal(p.isRunning(), false);
@@ -70,12 +60,9 @@ describe('@bust/periodically', () => {
 	it('executes', (ctx) => {
 		const p = new Periodical(interval);
 		const run = ctx.mock.fn();
-
 		ctx.mock.timers.enable({ apis: ['setTimeout'] });
-
 		p.start(run);
 		p.exec();
-
 		assert.equal(run.mock.callCount(), 1);
 		assert.notEqual(p.fn, noop);
 		assert.notEqual(p.timeoutId, undefined);
@@ -85,9 +72,7 @@ describe('@bust/periodically', () => {
 	it('does not execute when stopped', (ctx) => {
 		const p = new Periodical(interval);
 		const myObj = { run: ctx.mock.fn() };
-
 		p.exec();
-
 		assert.equal(myObj.run.mock.callCount(), 0);
 		assert.equal(p.fn, noop);
 		assert.equal(p.timeoutId, undefined);
@@ -97,21 +82,13 @@ describe('@bust/periodically', () => {
 	it('executes periodically', (ctx) => {
 		const p = new Periodical(interval);
 		const myObj = { run: ctx.mock.fn() };
-
 		ctx.mock.timers.enable({ apis: ['setTimeout'] });
-
 		p.start(myObj.run, myObj);
-
 		ctx.mock.timers.tick(interval);
-
 		assert.equal(myObj.run.mock.callCount(), 1);
-
 		ctx.mock.timers.tick(interval);
-
 		assert.equal(myObj.run.mock.callCount(), 2);
-
 		ctx.mock.timers.tick(interval);
-
 		assert.equal(myObj.run.mock.callCount(), 3);
 	});
 
@@ -125,26 +102,19 @@ describe('@bust/periodically', () => {
 		let date = new Date('1983-04-01T00:00:05.000Z'); // steven m. newman takes a stroll
 		let interval = 10 * 1000; // every 10s on the dot
 		let p = new Periodical(interval);
-
 		assert.equal(p.msUntilNextRun(date), 5000);
 		assert.equal(getTimeStampForNextRun(date, p), 'Fri, 01 Apr 1983 00:00:10 GMT');
-
 		date = new Date('1983-04-01T00:00:07.000Z');
 		p = new Periodical(interval);
-
 		assert.equal(p.msUntilNextRun(date), 3000);
 		assert.equal(getTimeStampForNextRun(date, p), 'Fri, 01 Apr 1983 00:00:10 GMT');
-
 		interval = 60 * 1000; // every 1m on the dot
 		date = new Date('1983-04-01T00:00:37.000Z');
 		p = new Periodical(interval);
-
 		assert.equal(p.msUntilNextRun(date), 23000);
 		assert.equal(getTimeStampForNextRun(date, p), 'Fri, 01 Apr 1983 00:01:00 GMT');
-
 		date = new Date('1983-04-01T00:00:45.000Z');
 		p = new Periodical(interval);
-
 		assert.equal(p.msUntilNextRun(date), 15000);
 		assert.equal(getTimeStampForNextRun(date, p), 'Fri, 01 Apr 1983 00:01:00 GMT');
 	});
@@ -153,7 +123,6 @@ describe('@bust/periodically', () => {
 		const date = new Date('1983-04-01T00:00:00.000Z');
 		const interval = 60 * 1000; // every 1m on the dot
 		const p = new Periodical(interval);
-
 		assert.equal(p.msUntilNextRun(date), 60000);
 		assert.equal(getTimeStampForNextRun(date, p), 'Fri, 01 Apr 1983 00:01:00 GMT');
 	});
@@ -162,4 +131,3 @@ describe('@bust/periodically', () => {
 		return new Date(d.getTime() + p.msUntilNextRun(d)).toUTCString();
 	}
 });
-
