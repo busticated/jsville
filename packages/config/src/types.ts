@@ -108,19 +108,20 @@ export type SettingsKeyOf<S> = string extends keyof S
 	? SettingsKey
 	: SettingsPath<S>;
 
+/** Resolves the final, undotted segment of a path on behalf of {@link SettingsSpecAt}. */
+export type SettingsSpecNamed<S, K> = K extends keyof S
+	? S[K]
+	: never;
+
 /** The {@link SettingsSpecInput} a dot-delimited key resolves to within a schema. */
 export type SettingsSpecAt<S, P extends string> = P extends `${infer Head}.${infer Rest}`
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define -- mutually recursive with SettingsSpecBelow
 	? SettingsSpecBelow<S, Head, Rest>
 	: SettingsSpecNamed<S, P>;
 
 /** Descends one branch of a dot-delimited path on behalf of {@link SettingsSpecAt}. */
 export type SettingsSpecBelow<S, Head, Rest extends string> = Head extends keyof S
 	? SettingsSpecAt<S[Head], Rest>
-	: never;
-
-/** Resolves the final, undotted segment of a path on behalf of {@link SettingsSpecAt}. */
-export type SettingsSpecNamed<S, K> = K extends keyof S
-	? S[K]
 	: never;
 
 /** The literal types a `default` can declare that widen back to a base primitive. */
@@ -142,14 +143,6 @@ export type SettingsWidened<T> =
 	| (T extends SettingsWidenable ? never : T);
 
 /**
- * The element type behind an `array` setting, inferred from `default` where
- * it says something.
- */
-export type SettingsArrayValue<Spec> = Spec extends { default: readonly (infer Element)[] }
-	? SettingsArrayOf<Element>
-	: string[];
-
-/**
  * Falls back to `string[]` for an empty default, which says nothing about its
  * elements - the value can always arrive as a comma-delimited environment
  * variable, which `Config.hydrate()` splits into strings.
@@ -158,10 +151,13 @@ export type SettingsArrayOf<Element> = [Element] extends [never]
 	? string[]
 	: SettingsWidened<Element>[];
 
-/** The value type a spec's `default` implies when it declares no explicit format. */
-export type SettingsDefaultValue<Spec> = Spec extends { default: infer Default }
-	? SettingsInferredValue<Spec, Default>
-	: SettingsValue;
+/**
+ * The element type behind an `array` setting, inferred from `default` where
+ * it says something.
+ */
+export type SettingsArrayValue<Spec> = Spec extends { default: readonly (infer Element)[] }
+	? SettingsArrayOf<Element>
+	: string[];
 
 /**
  * Reads a value type off a `default` on behalf of {@link SettingsDefaultValue}.
@@ -175,6 +171,11 @@ export type SettingsInferredValue<Spec, Default> =
 	| (Default extends Record<string, unknown> ? Record<string, unknown> : never)
 	| (Default extends SettingsWidenable | null ? SettingsWidened<Default> : never);
 
+/** The value type a spec's `default` implies when it declares no explicit format. */
+export type SettingsDefaultValue<Spec> = Spec extends { default: infer Default }
+	? SettingsInferredValue<Spec, Default>
+	: SettingsValue;
+
 /** The type each built-in format name resolves to. */
 export interface SettingsFormatValues {
 	int: number;
@@ -186,14 +187,6 @@ export interface SettingsFormatValues {
 	object: Record<string, unknown>;
 	regexp: RegExp;
 }
-
-/**
- * The type a single setting holds once hydrated, derived from its declared
- * `format` and falling back to its `default` when it declares none.
- */
-export type SettingsValueOf<Spec> = [SettingsFormatOf<Spec>] extends [never]
-	? SettingsDefaultValue<Spec>
-	: SettingsFormatValue<Spec, SettingsFormatOf<Spec>>;
 
 /** A spec's declared format, or `never` when it declares none. */
 export type SettingsFormatOf<Spec> = Spec extends { format: infer Format }
@@ -215,6 +208,14 @@ export type SettingsFormatValue<Spec, Format> =
 	| (Format extends readonly string[] ? Format[number] : never)
 	| (Format extends 'array' ? SettingsArrayValue<Spec> : never)
 	| (Format extends SettingsFormatName | readonly string[] ? never : SettingsValue);
+
+/**
+ * The type a single setting holds once hydrated, derived from its declared
+ * `format` and falling back to its `default` when it declares none.
+ */
+export type SettingsValueOf<Spec> = [SettingsFormatOf<Spec>] extends [never]
+	? SettingsDefaultValue<Spec>
+	: SettingsFormatValue<Spec, SettingsFormatOf<Spec>>;
 
 /**
  * The type `Config.get()` returns for a given key. Mirrors

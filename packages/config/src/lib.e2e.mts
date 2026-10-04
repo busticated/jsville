@@ -12,10 +12,9 @@ const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 const tmpRoot = path.join(packageRoot, 'tmp');
 
 
-describe('@bust/config end-to-end usage', () => {
-	describe('Node.js', () => {
+describe('@bust/config', () => {
+	describe('createConfig() in Node.js', () => {
 		const dir = path.join(tmpRoot, 'e2e-node');
-
 		before(() => {
 			writeFixture(dir, {
 				'.env': 'MY_APP_NAME=E2E Node Value\n',
@@ -37,15 +36,13 @@ describe('@bust/config end-to-end usage', () => {
 		});
 	});
 
-	describe('Browser (via Vite)', () => {
+	describe('createConfig() in the browser via Vite', () => {
 		const MY_APP_NAME = 'E2E Browser Test';
 		const MY_APP_SECRET = 'fake-secret-value';
 		const dir = path.join(tmpRoot, 'e2e-browser');
 		const bundlePath = path.join(dir, 'dist', 'bundle.js');
-
 		before(async () => {
 			const cwd = process.cwd();
-
 			writeFixture(dir, {
 				'package.json': JSON.stringify({ name: 'e2e-browser-fixture', private: true, type: 'module' }),
 				'.env': `MY_APP_NAME=${MY_APP_NAME}\nMY_APP_SECRET=${MY_APP_SECRET}\n`,

@@ -40,7 +40,7 @@ describe('@bust/config', () => {
 		config = new Config({ schema });
 	});
 
-	describe('Getting configuration settings', () => {
+	describe('get()', () => {
 		it('Gets a setting', () => {
 			const value = config.get('five.a.b');
 			assert.strictEqual(value, 'ok');
@@ -56,7 +56,7 @@ describe('@bust/config', () => {
 		});
 	});
 
-	describe('Getting `public` configuration settings', () => {
+	describe('getPublicSettings()', () => {
 		it('Gets all publicly available settings', () => {
 			const settings = config.getPublicSettings();
 			assert.deepEqual(settings, {
@@ -91,7 +91,7 @@ describe('@bust/config', () => {
 		});
 	});
 
-	describe('Getting `public` environment variables', () => {
+	describe('getPublicEnvVars()', () => {
 		it('Gets all publicly available environment variables', () => {
 			const env = config.getPublicEnvVars();
 			assert.deepEqual(env, {
@@ -105,7 +105,7 @@ describe('@bust/config', () => {
 		});
 	});
 
-	describe('Hydrating schema', () => {
+	describe('hydrate()', () => {
 		let fakeEnv!: ConfigEnvVars;
 
 		beforeEach(() => {
@@ -119,7 +119,6 @@ describe('@bust/config', () => {
 		it('Establishes settings', () => {
 			const settings = config.hydrate(schema);
 			const keys = [...settings.keys()];
-
 			assert.deepEqual(keys, [
 				'one',
 				'two',
@@ -158,7 +157,6 @@ describe('@bust/config', () => {
 		it('Establishes settings when environment variables are provided', () => {
 			const settings = config.hydrate(schema, fakeEnv);
 			const keys = [...settings.keys()];
-
 			assert.deepEqual(keys, [
 				'one',
 				'two',
@@ -223,7 +221,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = 'a';
-
 			assert.throws(
 				() => config.hydrate(schema, env),
 				{
@@ -233,7 +230,6 @@ describe('@bust/config', () => {
 
 			schema.test.default = 'a';
 			env.TEST = 'b';
-
 			assert.doesNotThrow(
 				() => config.hydrate(schema, env),
 			);
@@ -253,7 +249,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = 1.1;
-
 			assert.throws(
 				() => config.hydrate(schema),
 				{
@@ -262,7 +257,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = 1;
-
 			assert.throws(
 				() => config.hydrate(schema, env),
 				{
@@ -272,7 +266,6 @@ describe('@bust/config', () => {
 
 			schema.test.default = 1;
 			env.TEST = 2;
-
 			assert.doesNotThrow(
 				() => config.hydrate(schema, env),
 			);
@@ -292,7 +285,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = -1;
-
 			assert.throws(
 				() => config.hydrate(schema),
 				{
@@ -301,7 +293,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = 1.0;
-
 			assert.throws(
 				() => config.hydrate(schema, env),
 				{
@@ -311,7 +302,6 @@ describe('@bust/config', () => {
 
 			schema.test.default = 1.0;
 			env.TEST = 2.5;
-
 			assert.doesNotThrow(
 				() => config.hydrate(schema, env),
 			);
@@ -331,7 +321,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = -1.5;
-
 			assert.throws(
 				() => config.hydrate(schema, env),
 				{
@@ -341,7 +330,6 @@ describe('@bust/config', () => {
 
 			schema.test.default = -1.5;
 			env.TEST = -2.5;
-
 			assert.doesNotThrow(
 				() => config.hydrate(schema, env),
 			);
@@ -361,7 +349,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = 'http://example.com';
-
 			assert.throws(
 				() => config.hydrate(schema, env),
 				{
@@ -371,7 +358,6 @@ describe('@bust/config', () => {
 
 			schema.test.default = 'http://example.com';
 			env.TEST = 'http://example.com/updated';
-
 			assert.doesNotThrow(
 				() => config.hydrate(schema, env),
 			);
@@ -391,7 +377,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = false;
-
 			assert.doesNotThrow(
 				() => config.hydrate(schema, env),
 			);
@@ -411,7 +396,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = 'ok';
-
 			assert.doesNotThrow(
 				() => config.hydrate(schema, env),
 			);
@@ -431,7 +415,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = /ok/;
-
 			assert.doesNotThrow(
 				() => config.hydrate(schema, env),
 			);
@@ -451,7 +434,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = {};
-
 			assert.throws(
 				() => config.hydrate(schema, env),
 				{
@@ -461,7 +443,6 @@ describe('@bust/config', () => {
 
 			schema.test.default = {};
 			env.TEST = '{}';
-
 			assert.doesNotThrow(
 				() => config.hydrate(schema, env),
 			);
@@ -480,7 +461,6 @@ describe('@bust/config', () => {
 			);
 
 			schema.test.default = 'one,two,three';
-
 			assert.throws(
 				() => config.hydrate(schema),
 				{
@@ -490,7 +470,6 @@ describe('@bust/config', () => {
 
 			const env = { TEST: false };
 			schema.test.default = [];
-
 			assert.throws(
 				() => config.hydrate(schema, env),
 				{
@@ -500,14 +479,12 @@ describe('@bust/config', () => {
 
 			schema.test.default = [];
 			env.TEST = 'one,two,three';
-
 			assert.doesNotThrow(
 				() => config.hydrate(schema, env),
 			);
 
 			schema.test.default = [];
 			env.TEST = ['one', 'two', 'three'];
-
 			assert.doesNotThrow(
 				() => config.hydrate(schema, env),
 			);
