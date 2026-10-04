@@ -68,7 +68,7 @@ These are produced by tooling and overwritten on the next run — change the sou
 
 ## Code style
 
-The [DEVELOPMENT](DEVELOPMENT.md) doc is authoritative for the topics below — see "[How to name and locate your package's files](DEVELOPMENT.md#develop-file-structure)" and "[How to work with modules](DEVELOPMENT.md#develop-modules)". Summarized here because they apply to nearly every change; consult the [DEVELOPMENT](DEVELOPMENT.md) doc when this summary is not enough, and treat it as correct if the two disagree.
+The [DEVELOPMENT](DEVELOPMENT.md) doc is authoritative for the topics below — see "[How to name and locate your package's files](DEVELOPMENT.md#develop-file-structure)", "[How to work with modules](DEVELOPMENT.md#develop-modules)" and "[How to format your code](DEVELOPMENT.md#develop-formatting)". Summarized here because they apply to nearly every change; consult the [DEVELOPMENT](DEVELOPMENT.md) doc when this summary is not enough, and treat it as correct if the two disagree.
 
 **File naming and placement.** All packages live in `packages/`, all local development scripts live in `bin/`.
 
