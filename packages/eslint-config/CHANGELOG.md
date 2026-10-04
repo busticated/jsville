@@ -1,6 +1,13 @@
 # `@bust/eslint-config` Changelog
 <!-- next-version-start -->
 <!-- next-version-end -->
+## v2.1.0
+
+* update docs
+* apply the strict lint conventions
+* add an opt-in strict option
+
+
 ## v2.0.0
 
 * keep the test helpers branch-free for node 22 coverage

@@ -1,6 +1,12 @@
 # `@bust/config` Changelog
 <!-- next-version-start -->
 <!-- next-version-end -->
+## v0.2.2
+
+* update docs
+* apply the strict lint conventions
+
+
 ## v0.2.1
 
 * lint with @bust/eslint-config

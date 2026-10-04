@@ -1,6 +1,11 @@
 # `@bust/numeric-id-hasher` Changelog
 <!-- next-version-start -->
 <!-- next-version-end -->
+## v2.0.3
+
+* apply the strict lint conventions
+
+
 ## v2.0.2
 
 * lint with @bust/eslint-config

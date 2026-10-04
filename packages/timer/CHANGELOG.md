@@ -1,6 +1,11 @@
 # `@bust/timer` Changelog
 <!-- next-version-start -->
 <!-- next-version-end -->
+## v2.0.2
+
+* apply the strict lint conventions
+
+
 ## v2.0.1
 
 * split unit and end-to-end test tasks
