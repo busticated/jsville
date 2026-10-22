@@ -127,7 +127,7 @@ describe('@bust/timer', () => {
 		assert.equal(timer.isRunning(), false);
 	});
 
-	it('Determine if the timer is finished', () => {
+	it('Determines if the timer is finished', () => {
 		const timer = new Timer();
 		assert.equal(timer.isFinished(), false);
 		timer.start();
