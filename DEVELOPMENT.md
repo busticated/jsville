@@ -205,7 +205,7 @@ In order to support automated changelog updates, you will need to:
 
 * Commit package changes separately - e.g. run: `git add -p packages/<name>/*` to stage files, then commit
 * Format your commit message like: `[<package directory name>] <message>` e.g. `[timer] update docs`
-* Commit changes to the root package itself (anyting outside of the `./packages` directory) separately without prefixing your commit message
+* Commit changes to the root package itself (anything outside of the `./packages` directory) separately without prefixing your commit message
 
 Each package has its own changelog ([example](packages/timer/CHANGELOG.md)). Upon releasing, each changelog will be updated with the changes made to that package since its last release.
 
@@ -266,7 +266,7 @@ my-package
 <summary><b>How to name npm scripts</b></summary>
 <p>
 
-`npm` scripts are the primary means of executing programmatic tasks (e.g. tests, linting, releasing, etc) within the repo. to view available scripts, run `npm run`.
+`npm` scripts are the primary means of executing programmatic tasks (e.g. tests, linting, releasing, etc) within the repo. To view available scripts, run `npm run`.
 
 When creating a new script, be sure it does not already exist and use the following naming convention:
 
@@ -276,7 +276,7 @@ When creating a new script, be sure it does not already exist and use the follow
 
 Standard categories include: `test`, `lint`, `typecheck`, `build`, `clean`, `docs`, `package`, and `release`. `npm` itself includes special handling for `test` and `start` (doc: [1](https://docs.npmjs.com/cli/commands/npm-test), [2](https://docs.npmjs.com/cli/commands/npm-start)) amongst other [lifecycle scripts](https://docs.npmjs.com/cli/using-npm/scripts#life-cycle-scripts) - use these to expose key testing and start-up commands.
 
-Sometimes your new script will be very similar to an existing script. in those cases, try to extend the existing script before adding another one.
+Sometimes your new script will be very similar to an existing script. In those cases, try to extend the existing script before adding another one.
 
 </p>
 </details>
@@ -396,15 +396,15 @@ Packages are published from the `main` branch via CI/CD after peer review. To re
 	* `$ git pull`
 2. Make sure tests pass
 	* `$ npm test`
-4. Run the release command; this will inspect all packages, determine what has changed, and prompt you for input.
+3. Run the release command; this will inspect all packages, determine what has changed, and prompt you for input.
 	* `$ npm run release`
-5. Follow the on-screen instructions, wait for confirmation of success
+4. Follow the on-screen instructions, wait for confirmation of success
 	* Brand-new package? want to bump the `rc`? select "Custom Prerelease" when prompted then accept the default to create: `1.0.0-rc.1`
-6. Verify your release commit:
+5. Verify your release commit:
 	* `$ git log -1`
 	* Confirm the list of tags associated with the commit match the list of package versions in the message.
-7. Push your tags:
+6. Push your tags:
 	* `$ git push origin main --follow-tags`
 
 > [!CAUTION]
-> Avoid editing `git` history (`rebase`, etc) once the release commit is made - this will nullify the generated tags ([docs](https://git-scm.com/docs/git-tag#_on_re_tagging))_
+> Avoid editing `git` history (`rebase`, etc) once the release commit is made - this will nullify the generated tags ([docs](https://git-scm.com/docs/git-tag#_on_re_tagging))

@@ -9,7 +9,7 @@
 
 # JSVille
 
-An every-growing collection of JavaScript utility packages targeting Node.js and the browser (when possible).
+An ever-growing collection of JavaScript utility packages targeting Node.js and the browser (when possible).
 
 [![CI Status](https://github.com/busticated/jsville/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/busticated/jsville/actions)
 
@@ -35,4 +35,3 @@ An every-growing collection of JavaScript utility packages targeting Node.js and
 ## Development
 
 _See [`DEVELOPMENT.md`](./DEVELOPMENT.md)_
-

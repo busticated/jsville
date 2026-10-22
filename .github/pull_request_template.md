@@ -1,7 +1,7 @@
 ## Description
 
 <!--
-	Please write a brief description of the changes introduced by this PR: What issues(s) does it address? How does it solve them? For ui-centric changes, please include a screenshot or video.
+	Please write a brief description of the changes introduced by this PR: What issue(s) does it address? How does it solve them? For ui-centric changes, please include a screenshot or video.
 -->
 
 
