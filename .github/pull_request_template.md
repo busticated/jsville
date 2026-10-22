@@ -1,7 +1,7 @@
 ## Description
 
 <!--
-	Please write a brief description of the changes introduced by this PR: What issues(s) does it address? How does it solve them? For ui-centric changes, please include a screenshot or video.
+	Please write a brief description of the changes introduced by this PR: What issue(s) does it address? How does it solve them? For ui-centric changes, please include a screenshot or video.
 -->
 
 
@@ -38,7 +38,7 @@
 - [x] PR opened :tada:
 - [ ] Testing instructions have been provided
 - [ ] Docs have been updated (`npm run docs:build`)
-- [ ] Changes adhere to repo [conventions](https://github.com/busticated/jsville/DEVELOPMENT.md#conventions)
-- [ ] Development [How-To's](https://github.com/busticated/jsville/DEVELOPMENT.md#how-tos--faqs) have been provided
+- [ ] Changes adhere to repo [conventions](https://github.com/busticated/jsville/blob/main/DEVELOPMENT.md#conventions)
+- [ ] Development [How-To's](https://github.com/busticated/jsville/blob/main/DEVELOPMENT.md#how-tos--faqs) have been provided
 - [ ] Branch is rebased against _target_ (typically `main`)
 
