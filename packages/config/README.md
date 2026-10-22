@@ -37,8 +37,7 @@ import { config } from './config.ts';
 config.get('app.name');
 ```
 
-`@bust/config` works in both Node.js and the browser by leveraging import maps defined in its `package.json` file. Bundlers
-that respect the `browser` condition (Vite, webpack, Rollup, etc.) automatically get a browser-safe build with no Node.js-only dependencies.
+`@bust/config` works in both Node.js and the browser via conditional exports defined in its `package.json` file. Bundlers that respect the `browser` condition (Vite, webpack, Rollup, etc.) automatically get a browser-safe build with no Node.js-only dependencies.
 
 Within a Node.js context, environment variables are loaded from a `.env` file courtesy of the [`dotenv`](https://github.com/motdotla/dotenv) library.
 
