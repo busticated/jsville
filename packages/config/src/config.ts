@@ -17,7 +17,7 @@ import type {
 
 /**
  * The name of the global variable `@bust/config` expects to find settings stored
- * in when runnning in a browser.
+ * in when running in a browser.
  */
 export const CONFIG_GLOBAL_NAME = '__BUST_CONFIG__';
 
