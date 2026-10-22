@@ -5,7 +5,7 @@ import { Config, CONFIG_GLOBAL_NAME } from './config.js';
 export { type SettingsSchemaTree, type ConfigEnvVars, Config, CONFIG_GLOBAL_NAME };
 
 
-dotenv.config({ quiet: true }); // silence log spam / ads from dotenv v17 | https://github.com/motdotla/dotenv/issues/876
+dotenv.config({ quiet: true }); // suppress dotenv's "injected env" log
 
 /**
  * Builds a {@link Config} for use in Node.js: a local `.env` file (if
