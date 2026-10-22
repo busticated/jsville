@@ -3,7 +3,7 @@ import { strict as assert } from 'node:assert';
 import { Periodical, noop } from './index.js';
 
 
-describe('@bust/periodically', () => {
+describe('@bust/periodical', () => {
 	const interval = 10 * 1000;
 
 	it('initializes', () => {
